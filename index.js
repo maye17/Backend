@@ -1,4 +1,5 @@
 // clase product Manager
+// Primera Entrega
 
 class ProductManager {
     constructor(){

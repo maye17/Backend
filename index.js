@@ -1,91 +1,146 @@
-const fs= require('fs');
+const fs =require ("fs");
+const { stringify } = require("querystring");
+const path = require("path");
 
-// Clase product Manager
+const pathJSON = "./productos.json";
 
-class ProductManager {
-    constructor(path){
-        this.path=path;
+class ProductManager{
+    constructor(){
+        this.id=1;
         this.products=[];
-        this.id =1;
-
-        async function valueArchive() {
-            if(!fs.existsSync('products.json')){
-                 fs.writeFile("products.json","[]")
-            } 
-        
-            let productContent =  fs.readFile("products.json", "utf-8");
-            let products = JSON.parse(productContent);  
-          }
+        this.pathJSON=pathJSON;
+       
     }
 
-    
-    addProduct (product){
-        let valueCode = this.products.find((article)=> article.code === product.code);
+    readJson  () {
+        let productContent = fs.readFileSync(pathJSON, "utf-8");
+        return JSON.parse(productContent);
+                      
+  }
+
+  writeJson  (productContent) {
+        fs.writeFileSync(pathJSON,JSON.stringify(productContent,null,2),"utf-8")
+  }
+
+ 
+    addProduct (title, description, price, thumbnail, code, stock){
+
+        const {products} = this.readJson();
+
+        let newProduct = {
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock,
+     
+        };
+  /*       let valueCode = products.some((article)=> article.code === product.code); */
+        if(products.find((article)=> article.code === code)){
+           return 'This code already exists'
+
+        }        
+
+        if(!newProduct.title || !newProduct.description || !newProduct.price || !newProduct.thumbnail || !newProduct.code){
         
-        if(!valueCode){
-            if(product.title && product.description && product.price && product.thumbnail && product.code){
-              let newProduct={...product, id: this.id}
-                let newProducts ={}
-                newProducts = [...this.products, newProduct]  
-                this.id ++;
-                this.product++;
-                        
-                 let productString = JSON.stringify(newProducts,null,2);
-                 fs.promises.writeFile("products.json", productString); 
-                 
-                 return 'product  added in my list'     
-                
-            } else {
-               
-                return 'Fields missing'
-            }            
-        }else {
-            return 'This code already exists'
+            
+            return 'Fields missing'
+
+        }
+
+        
+        let newProducts={...newProduct, id: this.id}
+        products.push(newProducts);
+        this.id ++;
+
+       
+        this.writeJson({
+            products:products,
+        })
+        
+        return "product  added in my list"
+       
+    }
+
+    getProduct(){
+        const {products} = this.readJson();
+                return products   
+ 
+    }
+
+    getProductById(id){
+        const {products} = this.readJson();
+        if(products.find ((read) => read.id === id)){
+
+            return products
+             
+
+             }else {
+                return"Not found"    
+             }
+    }
+
+    // actualizar un producto
+
+    updateProduct(id,title, description, price, thumbnail, code, stock){
+        const {products} = this.readJson();
+        let newproductsUpdate = {
+            id,
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock,
+        }
+        if(products.findIndex((article)=> article.id === id)){          
+           console.log("no existe",id);
+            return "Don't product exists"            
+            
+        } else {
+            
+          let productsUpdate ={...newproductsUpdate}
+           
+        this.writeJson({
+            products:[productsUpdate],
+        })
+
+            return"exist"
+
+
         }
     }
 
-        getProducts(id){
+    deleteProduct(id){
+        const {products} = this.readJson();
+      
+        let deleteItem = {
+            id
+        }
+        
+        if(products.find((item)=> item.id ===id)){
+            products.pop(deleteItem)
+            this.writeJson({
+                products:products
+               
+            })
+            return "delete item Ok!"
+        } else {
+            return "Don't delete anything"
+        }
+    }
+    
 
-           let readProduct = this.products.find ((read) => read.id === id);
-           if(!readProduct){
-
-                return"Not found"
-
-                }else {
-                    return this.products
-                }
-            
-            }
-     }
-
-
-const product ={
-
-    title:'Camisa De Hombre Slim Fit',
-    description: 'Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)',
-    price:40.000,
-    thumbnail:'https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-slim-fit/3666165451391.html?color=T01&gclid=Cj0KCQjwlumhBhClARIsABO6p-ymC4l5Hce_68x4PHdV9xwh8p-e3thi08rWS37P4nOIvnhIQvMzfawaAhnEEALw_wcB',
-    code:'lacoste233',
-    stock: 200,
-
-}
-
-const product2 ={
-
-    title:'Camisa De Hombre Slim Fit',
-    description: 'Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)',
-    price:40.000,
-    thumbnail:'https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-slim-fit/3666165451391.html?color=T01&gclid=Cj0KCQjwlumhBhClARIsABO6p-ymC4l5Hce_68x4PHdV9xwh8p-e3thi08rWS37P4nOIvnhIQvMzfawaAhnEEALw_wcB',
-    code:'lacoste432',
-    stock: 200,
-
+    
 }
 
 
+const productsManager = new ProductManager;
 
-
-const productsManager = new ProductManager();
-console.log(productsManager.addProduct(product));
-console.log(productsManager.addProduct(product2));
-
-console.log(productsManager.getProducts(2));
+console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",38.000,"Sin Imagen","lacoste123",15)); 
+console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",40.000,"'https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-slim-fit/3666165451391.html?color=T01&gclid=Cj0KCQjwlumhBhClARIsABO6p-ymC4l5Hce_68x4PHdV9xwh8p-e3thi08rWS37P4nOIvnhIQvMzfawaAhnEEALw_wcB'","lacoste432",12)); 
+console.log(productsManager.getProduct());
+console.log(productsManager.getProductById(3)); 
+console.log(productsManager.updateProduct(2,"refresco","",220,"sin imagen","12",0))
+console.log(productsManager.deleteProduct(2)); 

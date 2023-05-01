@@ -12,19 +12,33 @@ class ProductManager{
        
     }
 
-     readJson  () {
-        let productContent =  fs.readFileSync(pathJSON, "utf-8");
+    async readJson  () {
+        try{
+
+        if(fs.existsSync(this.pathJSON)){
+        let productContent = await fs.promises.readFile(pathJSON, "utf-8");
         return JSON.parse(productContent);
+    
+    }
+     writeJson()
+    } catch (error) {
+        throw new Error (error.message)
+    }
                       
     }
 
-    writeJson  (productContent) {
-        fs.writeFileSync(pathJSON,JSON.stringify(productContent,null,2),"utf-8")
+  async  writeJson  (productContent) {
+      try {
+      await fs.promises.writeFile(pathJSON,JSON.stringify(productContent,null,2),"utf-8")
+      } catch (error) {
+          throw new Error(error.message)
+      }
+        
     }
 
  
   async addProduct (title, description, price, thumbnail, code, stock){
-
+    try {
         const {products} = await this.readJson();
 
         let newProduct = {
@@ -36,7 +50,7 @@ class ProductManager{
             stock,
      
         };
-  /*       let valueCode = products.some((article)=> article.code === product.code); */
+
         if(products.find((article)=> article.code === code)){
            return 'This code already exists'
 
@@ -61,29 +75,40 @@ class ProductManager{
         
         return "product  added in my list"
        
+    } catch (error) {
+       throw new Error (error.message) 
+    }
+        
     }
 
-    getProduct (){
-        const {products} =  this.readJson();
-                return products   
+    async getProduct (){
+        try {
+            const {products} = await this.readJson();
+            return products 
+            
+        } catch (error) {
+            throw new Error(error.message) 
+        }
+         
  
     }
 
-   async getProductById(id){
+    async getProductById(id){
+       try {
         const {products} = await this.readJson();
-        if(products.find ((read) => read.id === id)){
-
-            return products
-             
-
-             }else {
-                return"Not found"    
-             }
-    }
-
+        const idsolicitado =(products.find ((read) => read.id === id))
+              if(idsolicitado){
+                  return idsolicitado
+              }
+       } catch (error) {
+           throw new Error (error.message)
+       }
+   
+     }
     // actualizar un producto
 
    async updateProduct(id,title, description, price, thumbnail, code, stock){
+       try {
         const {products} = await this.readJson();
         let newproductsUpdate = {
             id,
@@ -101,14 +126,17 @@ class ProductManager{
         this.writeJson({
             products:[productsUpdate],
         })
-
             return"exist"
 
-
-        }
+        }   
+       } catch (error) {
+         throw new Error (error.message)  
+       }
+        
     }
 
   async  deleteProduct(id){
+      try {
         const {products} = await this.readJson();
       
         let deleteItem = {
@@ -125,12 +153,17 @@ class ProductManager{
         } else {
             return "Don't delete anything"
         }
+        
+      } catch (error) {
+         throw new Error (error.message) 
+      }
+        
     }
     
 
     
 }
-
+module.exports = ProductManager;
 
 const productsManager = new ProductManager;
 

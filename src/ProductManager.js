@@ -12,20 +12,20 @@ class ProductManager{
        
     }
 
-    readJson  () {
-        let productContent = fs.readFileSync(pathJSON, "utf-8");
+     readJson  () {
+        let productContent =  fs.readFileSync(pathJSON, "utf-8");
         return JSON.parse(productContent);
                       
-  }
+    }
 
-  writeJson  (productContent) {
+    writeJson  (productContent) {
         fs.writeFileSync(pathJSON,JSON.stringify(productContent,null,2),"utf-8")
-  }
+    }
 
  
-    addProduct (title, description, price, thumbnail, code, stock){
+  async addProduct (title, description, price, thumbnail, code, stock){
 
-        const {products} = this.readJson();
+        const {products} = await this.readJson();
 
         let newProduct = {
             title,
@@ -55,7 +55,7 @@ class ProductManager{
         this.id ++;
 
        
-        this.writeJson({
+       this.writeJson({
             products:products,
         })
         
@@ -63,14 +63,14 @@ class ProductManager{
        
     }
 
-    getProduct(){
-        const {products} = this.readJson();
+    getProduct (){
+        const {products} =  this.readJson();
                 return products   
  
     }
 
-    getProductById(id){
-        const {products} = this.readJson();
+   async getProductById(id){
+        const {products} = await this.readJson();
         if(products.find ((read) => read.id === id)){
 
             return products
@@ -83,8 +83,8 @@ class ProductManager{
 
     // actualizar un producto
 
-    updateProduct(id,title, description, price, thumbnail, code, stock){
-        const {products} = this.readJson();
+   async updateProduct(id,title, description, price, thumbnail, code, stock){
+        const {products} = await this.readJson();
         let newproductsUpdate = {
             id,
             title,
@@ -94,14 +94,10 @@ class ProductManager{
             code,
             stock,
         }
-        if(products.findIndex((article)=> article.id === id)){          
-           console.log("no existe",id);
-            return "Don't product exists"            
-            
-        } else {
-            
+        if(products.findIndex((article)=> article.id === id)){            
+            return "Don't product exists"                    
+        } else {         
           let productsUpdate ={...newproductsUpdate}
-           
         this.writeJson({
             products:[productsUpdate],
         })
@@ -112,8 +108,8 @@ class ProductManager{
         }
     }
 
-    deleteProduct(id){
-        const {products} = this.readJson();
+  async  deleteProduct(id){
+        const {products} = await this.readJson();
       
         let deleteItem = {
             id
@@ -140,7 +136,8 @@ const productsManager = new ProductManager;
 
 console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",38.000,"Sin Imagen","lacoste123",15)); 
 console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",40.000,"'https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-slim-fit/3666165451391.html?color=T01&gclid=Cj0KCQjwlumhBhClARIsABO6p-ymC4l5Hce_68x4PHdV9xwh8p-e3thi08rWS37P4nOIvnhIQvMzfawaAhnEEALw_wcB'","lacoste432",12)); 
+console.log(productsManager.addProduct("Camisa De Hombre Regular Fit","Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",30.000,"https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01","lacoste367",12)); 
 console.log(productsManager.getProduct());
 console.log(productsManager.getProductById(3)); 
 console.log(productsManager.updateProduct(2,"refresco","",220,"sin imagen","12",0))
-console.log(productsManager.deleteProduct(2)); 
+/* console.log(productsManager.deleteProduct(2));  */

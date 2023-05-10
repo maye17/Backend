@@ -22,9 +22,8 @@ app.get(`/products`, async (req,res)=>{
        res.json(showProducts)
     } catch (error) {
         throw new Error(error.message)
-    }
-   
-})
+    }   
+});
 
 
 // solicitando id del pedido
@@ -48,5 +47,3 @@ app.get(`/products/:pid`, async (req,res)=>{
 
  
  
-  
-

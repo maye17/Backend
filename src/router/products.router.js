@@ -1,15 +1,24 @@
 const fs = require("fs");
+const express = require("express");
 const ProductManager = require("../ProductManager.js");
-
-const products = new ProductManager ("./productos.json");
+const handlebars = require("express-handlebars");
+const productos = new ProductManager ("./productos.json");
 const productsRouter = express.Router();
+const uploader = require("../utils.js");
 
-productsRouter.get("/", (req,res)=> {
+productsRouter.get("/", async (req,res)=> {
     try {
-        const dataProduct = products.getProducts();
+        const {products} = await productos.readJson();
+        const datos =[{title:"boludo",description:"dasda"}];
+        
+      return  res.status(200).render("home",{products});
+        /* const {products} = await productos.readJson();
         const limit = req.query.limit
-        const limitedProducts = limit ? dataProduct.slice(0, limit) : dataProduct;
-        res.status(200).json(limitedProducts)
+        const limitedProducts = limit ? products.slice(0, limit) : products;
+        res.status(200).json({
+            status:"OK",
+            msg:"product list",
+            data:limitedProducts}) */
     } catch (err) {
         if (err instanceof Error) {
             res.status(400).json({ status: "error", msg: "Invalid input", data: {} })
@@ -20,10 +29,10 @@ productsRouter.get("/", (req,res)=> {
 
 })
 
-productsRouter.get("/:pid",  (req, res) => {
+productsRouter.get("/:pid", async (req, res) => {
     try {
         const id = req.params.pid
-        const dataId = products.getProductById(parseInt(id));
+        const dataId = await productos.getProductById(parseInt(id));
         res.status(200).json(dataId)
     } catch (err) {
         if (err instanceof Error) {
@@ -35,37 +44,41 @@ productsRouter.get("/:pid",  (req, res) => {
 })
 
 
-productsRouter.post("/",  (req, res) => {
+productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
     try {
-        const data =  products.getProducts();
+        const {products} = await productos.readJson();
         let newProduct = req.body;
-        let findproduct = (data.find((ele) => ele.code === newProduct.code))
-        if (findproduct) {
+        newProduct.id = ((Math.random()*10000000).toFixed(0));
+        newProduct.picture = "http://localhost:8080/" + req.file.filename;
+      /*   let newProduct = req.body;
+        let findproduct = (data.find((ele) => ele.code === newProduct.code)) */
+        if (products.find((item) => item.code === newProduct.code)) {
             return res.status(400).json({
                 status: "error",
-                msg: "Product already exists"
+                msg: "Product already exists",
+                data:{}
             })
         }
-        const requiredField = ["title", "description", "code", "price", "stock", "category"]
+/*         const requiredField = ["title", "description", "code", "price", "stock", "category"]
         const allFields = requiredField.every(prop => newProduct[prop]);
         if (newProduct.id == undefined && allFields) {
             newProduct =
             {
                 ...newProduct,
                 id: data[data.length - 1].id + 1
-            }
-             products.addProduct({ ...newProduct, status: true })
+            } */
+             productos.addProduct(newProduct)
             return res.status(200).json({
-                status: "success",
+                status: "Ok",
                 msg: "Product added successfully",
                 data: newProduct
             })
-        } else {
+        /* } else {
             res.status(400).json({
                 status: "error",
                 msg: "Invalid input"
-            })
-        }
+            }) */
+        
     } catch (err) {
         if (err instanceof Error) {
             res.status(400).json({ status: "error", msg: "Invalid input", data: {} })
@@ -75,14 +88,14 @@ productsRouter.post("/",  (req, res) => {
     }
 })
 
-productsRouter.put("/:pid",  (req, res) => {
+productsRouter.put("/:pid",uploader.single("thumbnail"),  async   (req, res) => {
     try {
         const id = req.params.pid
-        const data =  products.getProducts()
+        const {products} = await productos.readJson()
         let changeProduct = req.body;
-         products.updateProduct(id, changeProduct);
+         productos.updateProduct(id, changeProduct);
         return res.status(201).json({
-            status: "Success",
+            status: "Ok",
             msg: "product updated",
             data: changeProduct
         })
@@ -91,12 +104,12 @@ productsRouter.put("/:pid",  (req, res) => {
     }
 })
 
-productsRouter.delete("/:pid",  (req, res) => {
+productsRouter.delete("/:pid", uploader.single("thumbnail"), async  (req, res) => {
     try {
         const id = req.params.pid
-        const data =  products.getProducts()
-        let findProduct = data.find((prod) => prod.id == id)
-        if (!findProduct) {
+        const {products} = await productos.readJson();
+/*         let findProduct = data.find((prod) => prod.id == id) */
+        if (products.find((prod) => prod.id === id)) {
             return  res.status(400).json({
                     status: "error",
                     msg: "Product not found"
@@ -115,6 +128,7 @@ productsRouter.delete("/:pid",  (req, res) => {
 }
 )
 
+   
 productsRouter.get("*", (req, res) => {
     res.status(404).json({ status: "error", msg: "Route not found", data: {} })
 })

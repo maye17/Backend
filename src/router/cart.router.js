@@ -1,10 +1,9 @@
 const express = require ("express");
-const productManager = require("./../ProductManager");
-const CartManager = require("./ CartManager");
-const ProductManager = require("./../ProductManager");
+/* const CartManager = require("./ CartManager"); */
+const ProductManager = require("../ProductManager");
 
 const products = new ProductManager("../../productos.json");
-const carts = new CartManager("../../carts.json")
+/* const carts = new CartManager("../../carts.json") */
 const cartRouter = express.Router();
 
 cartRouter.get("/", (req,res)=> {

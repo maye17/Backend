@@ -7,7 +7,9 @@ const productsRouter = require("./router/products.router");
 const cartsRouter = require("./router/cart.router.js");
 const { Server } = require("socket.io");
 const allProductsRouter = require("./router/allproducts");
-const realTimeProducts = require("./router/realtimeproducts")
+const realTimeProducts = require("./router/realtimeproducts");
+const ProductManager = require("./ProductManager.js");
+const productos = new ProductManager ("../productos.json");
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -43,6 +45,11 @@ socketServer.on("connection", (socket)=>{
 }, 2000);
 
 });
+
+socketServer.on("new-product",async(newProduct)=>{
+    await productos.addProduct({...newProduct})
+})
+
 
 app.get("*"), (req, res) => {
     return res.status(404).json({

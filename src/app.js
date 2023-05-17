@@ -4,7 +4,10 @@ const app = express();
 const port =8080;
 const data = require ('../productos.json');
 const productsRouter = require("./router/products.router");
-const cartsRouter = require("./router/cart.router.js")
+const cartsRouter = require("./router/cart.router.js");
+const { Server } = require("socket.io");
+const allProductsRouter = require("./router/allproducts");
+const realTimeProducts = require("./router/realtimeproducts")
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -16,10 +19,30 @@ app.set("views", "views");
 
 
 
-
+// rutas api JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 
+// Rutas: HTML Render
+app.use("/home", allProductsRouter);
+
+
+//Rtuas: Sockets
+
+app.use("/realTimeProducts", realTimeProducts)
+
+const httpServer= app.listen(port,()=>{
+    console.log(`server listening  http://localhost:${port}`);
+})
+
+const socketServer= new Server(httpServer);
+socketServer.on("connection", (socket)=>{
+    console.log("se abrio un canal de socket" + socket.id);
+    setInterval(() => {
+    socketServer.emit("msg_back_todos", { msg: "hola desde el back a todos" });
+}, 2000);
+
+});
 
 app.get("*"), (req, res) => {
     return res.status(404).json({
@@ -28,46 +51,6 @@ app.get("*"), (req, res) => {
          data: {} })
 }
 
-
-app.listen(port,()=>{
-    console.log(`server listening  http://localhost:${port}`);
-})
-
-// respuesta al hacer un pedido a una función
-/* 
-app.get(`/products`, async (req,res)=>{
-    try {
-        
-        const limit = parseInt(req.query.limit);
-        const newProducts =  await newProductManger.getProduct();
-       const showProducts = limit ? newProducts.slice(0, limit) :newProducts;
-       res.json(showProducts)
-    } catch (error) {
-        throw new Error(error.message)
-    }   
-});
- */
-
-// solicitando id del pedido
-/* app.get(`/products/:pid`, async (req,res)=>{
-    try {
-        const idPedido = parseInt(req.params.pid) ;
-    const idSolicitado = await newProductManger.getProductById(idPedido);
- /* const idSolicitado = data.products.find((item)=> (item.id === idPedido)) */
-/*     if(!idPedido){
-        return res.json(newProductManger.readJson())
-    }
-     if(idSolicitado){
-        return res.json(idSolicitado);
-     }else {
-         return res.json({error:'El producto con el id: ' +  idPedido + ' no existe'})
-        }} catch (error) {
-            throw new Error(error.message)
-
-    }
-})  */
-
- 
  
 // solicitando id del pedido
 app.get(`/products/:pid`, async (req,res)=>{

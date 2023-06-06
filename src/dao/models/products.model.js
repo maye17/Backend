@@ -4,15 +4,16 @@ const model = mongoose.model;
 
 
 const productSchema = new Schema({
-    title: { type: String, required: true, max: 100},
-    description: { type: String, required: true, max:150 },
-    price: { type: Number, required: true, max: 20},
+    title: { type: String, required: true},
+    description: { type: String, required: true },
+    price: { type: Number, required: true},
     thumbnail: { type: String, required: true },
-    code: { type: String, required: true, unique: true, max: 50 },
+    code: { type: String, required: true, unique: true},
     stock: { type: Number, required: true},
     status: { type: Boolean, default: true }
   }, { versionKey: false });
 
 
-  module.exports = {mongooseMatch: mongoose.model('products', productSchema)}
+  module.exports =mongooseMatch = mongoose.model('products', productSchema)
+  
   

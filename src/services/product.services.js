@@ -3,7 +3,7 @@ const mongooseMatch = require('../dao/models/products.model');
 class ProductService {
     async getAllProducts() {
         try {
-            const products = await mongooseMatch.find().lean();
+            const products = await mongooseMatch.find();
             console.log('products', products);
             return products;
         } catch (error) {
@@ -20,7 +20,7 @@ class ProductService {
         }
     }
 
-    async createProduct(productData) {
+    async addProduct(productData) {
         try {
             const product = await mongooseMatch.create(productData);
             return product;

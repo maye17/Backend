@@ -1,26 +1,29 @@
 const fs = require("fs");
 const express = require("express");
-const ProductManager = require("../ProductManager.js");
+/* const ProductManager = require("../dao/ProductManager.js"); */
 const handlebars = require("express-handlebars");
-const productos = new ProductManager ("./productos.json");
+/* const productos = new ProductManager ("productos"); */
 const productsRouter = express.Router();
-const uploader = require("../utils.js");
+const uploader = require("../utils/utils.js");
+const ProductService = require('../services/product.services.js')
+const productService = new ProductService();
 
 productsRouter.get("/", async (req,res)=> {
     try {
-        /* const {products} = await productos.readJson(); */
-        
-   /*    return  res.status(200).render("home",{products}); */
-        const {products} = await productos.readJson();
+
+       /*  const products = await productos.getProduct(); */
+
+       const products = await productService.getAllProducts();
         const limit = req.query.limit
         const limitedProducts = limit ? products.slice(0, limit) : products;
         res.status(200).json({
             status:"OK",
             msg:"product list",
-            data:limitedProducts})
+            payload:products,
+        })
     } catch (err) {
         if (err instanceof Error) {
-            res.status(400).json({ status: "error", msg: "Invalid input", data: {} })
+            res.status(400).json({ status: "error", msg: "Invalid input lectura todos", data: {} })
         } else {
             res.status(500).json({ status: "error", msg: "Error in server", data: {} })
         }
@@ -31,11 +34,13 @@ productsRouter.get("/", async (req,res)=> {
 productsRouter.get("/:pid", async (req, res) => {
     try {
         const id = req.params.pid
-        const dataId = await productos.getProductById(parseInt(id));
+      /*   const dataId = await productos.getProductById(parseInt(id)); */
+
+      const dataId = await productService.getProductById(parseInt(id))
         res.status(200).json(dataId)
     } catch (err) {
         if (err instanceof Error) {
-            res.status(400).json({ status: "error", msg: "Invalid input", data: {} })
+            res.status(400).json({ status: "error", msg: "Invalid input lectura", data: {} })
         } else {
             res.status(500).json({ status: "error", msg: "Error in server", data: {} })
         }
@@ -45,13 +50,16 @@ productsRouter.get("/:pid", async (req, res) => {
 
 productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
     try {
-        const {products} = await productos.readJson();
+       /*  const {products} = await productos.readJson(); */
+
+    
         let newProduct = req.body;
+        const createProduct = await productService(newProduct)
         newProduct.id = ((Math.random()*10000000).toFixed(0));
         newProduct.picture = "http://localhost:8080/" + req.file.filename;
       /*   let newProduct = req.body;
         let findproduct = (data.find((ele) => ele.code === newProduct.code)) */
-        if (products.find((item) => item.code === newProduct.code)) {
+        if (createProduct.find((item) => item.code === newProduct.code)) {
             return res.status(400).json({
                 status: "error",
                 msg: "Product already exists",
@@ -80,7 +88,7 @@ productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
         
     } catch (err) {
         if (err instanceof Error) {
-            res.status(400).json({ status: "error", msg: "Invalid input", data: {} })
+            res.status(400).json({ status: "error", msg: "Invalid input datos", data: {} })
         } else {
             res.status(500).json({ status: "error", msg: "Error in server", data: {} })
         }
@@ -90,7 +98,9 @@ productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
 productsRouter.put("/:pid",uploader.single("thumbnail"),  async   (req, res) => {
     try {
         const id = req.params.pid
-        const {products} = await productos.readJson()
+       /*  const {products} = await productos.readJson() */
+
+       const productos = await productService.getAllProducts();
         let changeProduct = req.body;
          productos.updateProduct(id, changeProduct);
         return res.status(201).json({

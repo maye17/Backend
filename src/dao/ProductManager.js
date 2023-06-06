@@ -165,6 +165,8 @@ class ProductManager{
 }
 module.exports = ProductManager;
 
+
+/* 
 const productsManager = new ProductManager;
 
 console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",38.000,"Sin Imagen","lacoste123",15)); 
@@ -172,5 +174,5 @@ console.log(productsManager.addProduct("Camisa De Hombre Slim Fit","Camisa De Ho
 console.log(productsManager.addProduct("Camisa De Hombre Regular Fit","Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",30.000,"https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01","lacoste367",12)); 
 console.log(productsManager.getProduct());
 console.log(productsManager.getProductById(3)); 
-console.log(productsManager.updateProduct(2,"refresco","",220,"sin imagen","12",0))
+console.log(productsManager.updateProduct(2,"refresco","",220,"sin imagen","12",0)) */
 /* console.log(productsManager.deleteProduct(2));  */

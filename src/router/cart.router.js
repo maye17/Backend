@@ -1,17 +1,18 @@
 const express = require ("express");
-/* const CartManager = require("./ CartManager"); */
-const ProductManager = require("../ProductManager");
-
-const products = new ProductManager("../../productos.json");
-/* const carts = new CartManager("../../carts.json") */
+const ProductManager = require("../dao/ProductManager");
+const products = new ProductManager("productos");
+const CartManager = require("../dao/CartManager");
+const carts = new CartManager ("carts")
 const cartRouter = express.Router();
 
-cartRouter.get("/", (req,res)=> {
+cartRouter.get("/", async (req,res)=> {
     try {
+
+        const pedido = await carts.getCarts()
         return res.status(200).json({
             status:"success",
             msg:"Exitoso",
-            data:products
+            data:carts
         })
     } catch (error) {
         if(error instanceof  error){

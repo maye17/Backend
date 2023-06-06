@@ -1,9 +1,9 @@
-<h1>Productos</h1>
-
-<div class="container-fluid box">
-    <table class="table table-hover">
-    <thead>
-      <tr>
+    <div class="container-fluid box">
+      <h1>Productos</h1>
+      <button id="btn-agregar" class="btn btn-primary">Agregar</button>
+      <table class="table table-hover">
+        <thead id="head" class="table-primary">
+           <tr>
          <th scope="col">#</th>
         <th scope="col">título:</th>
         <th scope="col">Description</th>
@@ -13,15 +13,15 @@
         <th scope="col">Stock</th>
          <th scope="col">Acciones</th>
       </tr>
-    </thead>
-    <tbody>
-        {{#each products}}
+        </thead>
+        <tbody>
+            {{#each products}}
       <tr>
         <th scope="row">{{id}}</th>
         <td>{{title}}</td>
         <td>{{description}}</td>
         <td>{{price}}</td>
-         <td>{{thumbnail}}</td>
+         <td><a href={{thumbnail}}>Imagen del Producto</a></td>
         <td>{{code}}</td>
         <td>{{stock}}</td>
         <td>
@@ -42,9 +42,9 @@
         </td>
       </tr>
         {{/each}}
-    </tbody>
-  </table>
-</div>
-
+        </tbody>
+      </table>
+    </div>   
 <script src="/socket.io/socket.io.js"></script>
-<script src="js/index.js"></script>
+<script src="/js/index.js"></script>
+

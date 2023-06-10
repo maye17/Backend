@@ -50,11 +50,19 @@ app.use("/realTimeProducts", realTimeProducts)
 
 //
 
+let msgs =[]
 
 const socketServer= new Server(httpServer);
 socketServer.on("connection", (socket)=>{
 /*     console.log("se abrio un canal de socket" + socket.id); */
     
+socket.on("msg_front_to_back", (msg) => {
+    /* console.log(JSON.stringify(data)); */
+    console.log(msg);
+    msgs.unshift(msg);
+    socketServer.emit("msg_back_to_front", msgs)
+ }); 
+
     socket.on("new-Product",async(newProducts)=>{
         try {
             await productos.addProduct({...newProducts})

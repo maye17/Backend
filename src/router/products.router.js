@@ -15,9 +15,10 @@ productsRouter.get("/", async (req,res)=> {
        /*  const products = await productos.getProduct(); */
 
        const products = await productService.getAllProducts();
+       console.log(products);
       /*   const limit = req.query.limit
         const limitedProducts = limit ? products.slice(0, limit) : products; */
-        res.status(200).json({
+      return  res.status(200).json({
             status:"OK",
             msg:"product list",
             payload:products,

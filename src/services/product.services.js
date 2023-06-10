@@ -1,10 +1,10 @@
-const mongooseMatch = require('../dao/models/products.model');
+const mongooseMatch = require('../dao/models/products.model.js');
 
 class ProductService {
     async getAllProducts() {
         try {
-            const products = await mongooseMatch.find();
-            console.log('products', products);
+            const products = await mongooseMatch.find({});
+            console.log('productoss en mongo', products);
             return products;
         } catch (error) {
             throw error;

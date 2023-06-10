@@ -59,4 +59,63 @@ if(btnAdd){
     btnAdd.addEventListener('click',EnviarProduct)
 }
 
+//creando chat
+let userName = "";
+async function main() {
+  const { value: nombre } = await Swal.fire({
+    title: "Enter your name",
+    input: "text",
+    inputLabel: "Your name",
+    inputValue: "",
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return "You need to write something!";
+      }
+    },
+  });
+    userName = nombre;
 
+}
+
+main();
+
+
+const chatBoxOne = document.querySelector("#textchat");
+
+
+
+chatBoxOne.addEventListener("keyup", ({ key }) => {
+  if (key == "Enter") {
+    socket.emit("msg_front_to_back", {
+      user: userName,
+      msg: chatBoxOne.value,
+    });
+    chatBoxOne.value = "";
+  }
+});
+
+socket.on("msg_back_to_front", (msgs) => {
+    /*  console.log(JSON.stringify(data)); */
+   
+    let msgformat = "";
+   
+    msgs.forEach(msg => {
+     let div ="";
+     div += `
+     <li class="other">
+           <div id="avatar" class="avatar"><img id="imgAvatar" src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+         <div class="msg">
+           <p id="msg" class="msg-name">${msg.user}</p>    
+           <p id="msg">${msg.msg}</p>    
+         </div>
+       </li>  
+    `
+   msgformat =div + msgformat
+      
+    });
+     const msg = document.querySelector("#chat");
+   
+    msg.innerHTML =msgformat;
+   });  
+   

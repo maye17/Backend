@@ -1,5 +1,5 @@
-const mongooseMatch = require('../dao/models/products.model');
-const mongooseCart = require('../dao/models/carts.model');
+const mongooseMatch = require('../models/products.model');
+const mongooseCart = require('../models/carts.model');
 
 
 class CartService {

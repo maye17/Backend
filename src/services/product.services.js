@@ -1,10 +1,29 @@
-const mongooseMatch = require('../dao/models/products.model.js');
+const MongooseProducts = require('../models/products.model.js');
 
 class ProductService {
-    async getAllProducts() {
+    async getAllProducts(page, limit, sort, category, status) {
         try {
-            const products = await mongooseMatch.find({});
-            console.log('productoss en mongo', products);
+            const options = {}
+            if(page){
+                options.page = page || 1
+            }
+            if(limit){
+                options.limit = limit || 10
+            }
+            if(sort){
+                options.sort = { price: sort === 'desc' ? -1 : 1 };
+            }
+
+            const filter = {};
+            if(category){
+                filter.category = category || '';
+            }
+            if(status){
+                filter.status = status || true;
+            }
+
+            const products = await MongooseProducts.paginate(filter, options);
+
             return products;
         } catch (error) {
             throw error;
@@ -13,7 +32,7 @@ class ProductService {
 
     async getProductById(productId) {
         try {
-            const product = await mongooseMatch.findById(productId);
+            const product = await MongooseProducts.findById(productId);
             return product;
         } catch (error) {
             throw error;
@@ -22,7 +41,7 @@ class ProductService {
 
     async addProduct(productData) {
         try {
-            const product = await mongooseMatch.create(productData);
+            const product = await MongooseProducts.create(productData);
             return product;
         } catch (error) {
             throw error;
@@ -31,7 +50,7 @@ class ProductService {
 
     async updateProduct(productId, productData) {
         try {
-            const product = await mongooseMatch.findByIdAndUpdate(
+            const product = await MongooseProducts.findByIdAndUpdate(
                 productId,
                 productData,
                 { new: true }
@@ -44,7 +63,7 @@ class ProductService {
 
     async deleteProduct(productId) {
         try {
-            const product = await mongooseMatch.findByIdAndDelete(productId);
+            const product = await MongooseProducts.findByIdAndDelete(productId);
             return product;
         } catch (error) {
             throw error;

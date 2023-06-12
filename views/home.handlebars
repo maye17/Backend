@@ -1,5 +1,11 @@
 <div class="container-fluid box">
-  <h1>Productos</h1>
+    <div style="display: flex; justify-content: space-between; padding: 30px">
+    <h1>Productos</h1>
+      <div> ORDENAR
+        <a href="?page=1&limit={{paginationInfo.limit}}&sort=asc&category={{category}}&status={{status}}">&#8593;</a>
+        <a href="?page=1&limit={{paginationInfo.limit}}&sort=desc&category={{category}}&status={{status}}">&#8595;</a>
+      </div>
+  </div>
     <table class="table table-hover">
     <thead>
       <tr>
@@ -44,3 +50,13 @@
     </tbody>
   </table>
 </div>
+<div style="display: flex; justify-content: center; margin-top: 30px">
+  <div class="pagination">
+    {{#if paginationInfo.hasPrevPage}}
+    <a href="?page={{paginationInfo.prevPage}}&limit={{paginationInfo.limit}}&sort={{sort}}&category={{category}}&status={{status}}">&lt; Anterior</a>
+    {{/if}}
+    <span style="margin-left: 20px; margin-right: 20px">Página {{paginationInfo.page}} de {{paginationInfo.totalPages}}</span>
+    {{#if paginationInfo.hasNextPage}}
+    <a href="?page={{paginationInfo.nextPage}}&limit={{paginationInfo.limit}}&sort={{sort}}&category={{category}}&status={{status}}">Siguiente &gt;</a>
+    {{/if}}
+  </div>

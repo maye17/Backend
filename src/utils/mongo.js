@@ -5,7 +5,9 @@ const connectMongo = async ()=>{
         
         await mongoose.connect (
             "mongodb+srv://maye_17:Z43IROGnWaS5mLn0@ecommerce.dhbbfye.mongodb.net/?retryWrites=true&w=majority"
+            
         );
+    /*     console.log(db.connection.host); */
 
         console.log("plug to mongo!");
 

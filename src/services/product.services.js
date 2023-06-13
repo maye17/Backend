@@ -8,7 +8,7 @@ class ProductService {
                 options.page = page || 1
             }
             if(limit){
-                options.limit = limit || 10
+                options.limit = limit || 5
             }
             if(sort){
                 options.sort = { price: sort === 'desc' ? -1 : 1 };

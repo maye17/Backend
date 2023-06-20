@@ -7,6 +7,7 @@ const cartsRouter = require("./router/cart.router.js");
 const { Server } = require("socket.io");
 const allProductsRouter = require("./router/allproducts.js");
 const realTimeProducts = require("./router/realtimeproducts.js");
+const authRouter = require("./router/auth.router.js")
 /* const ProductManager = require("./dao/ProductManager.js");
 const productos = new ProductManager ("productos.json"); */
 const form = require('./router/form.router');
@@ -44,6 +45,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/", allProductsRouter);
 app.use("/formulario", form);
 app.use('/chat', chatRouter)
+app.use('/auth', authRouter )
 
 
 //Rtuas: Sockets

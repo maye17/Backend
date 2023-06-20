@@ -1,5 +1,7 @@
 const express = require ("express");
 const chatRouter = express.Router();  
+const MesaggeService = require("../services/mesagge.services")
+const mesagge = new MesaggeService;
 
 chatRouter.get('/', async (req, res) => {
     try {

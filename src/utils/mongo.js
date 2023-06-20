@@ -4,7 +4,7 @@ const connectMongo = async ()=>{
     try {
         
         await mongoose.connect (
-            "mongodb+srv://maye_17:Z43IROGnWaS5mLn0@ecommerce.dhbbfye.mongodb.net/?retryWrites=true&w=majority"
+            "mongodb+srv://maye_17:Z43IROGnWaS5mLn0@ecommerce.dhbbfye.mongodb.net/ecommerce?retryWrites=true&w=majority"
             
         );
     /*     console.log(db.connection.host); */

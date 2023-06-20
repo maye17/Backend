@@ -49,14 +49,28 @@ const EnviarProduct =(e)=>{
             thumbnail:inputImage.value,
             code:inputCode.value,
             stock:inputStock.value
+            
         }
+  
         console.log('producto agregado',newProducts);
-        socket.emit('new-Product',newProducts)
+        socket.emit('new-Product',newProducts);
+        toast.success('agregado con éxito!', {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          })
+
     }
     
 
 if(btnAdd){
     btnAdd.addEventListener('click',EnviarProduct)
+
 }
 
 //creando chat
@@ -90,6 +104,7 @@ chatBoxOne.addEventListener("keyup", ({ key }) => {
     socket.emit("msg_front_to_back", {
       user: userName,
       msg: chatBoxOne.value,
+      
     });
     chatBoxOne.value = "";
   }

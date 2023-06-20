@@ -50,13 +50,3 @@
     </tbody>
   </table>
 </div>
-<div style="display: flex; justify-content: center; margin-top: 30px">
-  <div class="pagination">
-    {{#if paginationInfo.hasPrevPage}}
-    <a href="?page={{paginationInfo.prevPage}}&limit={{paginationInfo.limit}}&sort={{sort}}&category={{category}}&status={{status}}">&lt; Anterior</a>
-    {{/if}}
-    <span style="margin-left: 20px; margin-right: 20px">Página {{paginationInfo.page}} de {{paginationInfo.totalPages}}</span>
-    {{#if paginationInfo.hasNextPage}}
-    <a href="?page={{paginationInfo.nextPage}}&limit={{paginationInfo.limit}}&sort={{sort}}&category={{category}}&status={{status}}">Siguiente &gt;</a>
-    {{/if}}
-  </div>

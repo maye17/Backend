@@ -1,16 +1,20 @@
 const fs = require("fs");
 const express = require("express");
-const ProductManager = require("../dao/ProductManager.js");
+/* const ProductManager = require("../dao/ProductManager.js");
+const productos = new ProductManager ("./productos.json"); */
+
 const handlebars = require("express-handlebars");
-const productos = new ProductManager ("./productos.json");
+
 const realTimeProducts = express.Router();
 const uploader = require("../utils/utils.js");
+const ProductService = require("../services/product.services.js");
+const productos = new ProductService();
 
 realTimeProducts.get("/", async (req,res)=> {
 
     try {
     
-        const products = await productos.getProduct();
+        const products = await productos.getAllProducts();
 
         
       return  res.status(200).render("realTimeProducts",{products});

@@ -1,7 +1,7 @@
 const MongooseProducts = require('../models/products.model.js');
 
 class ProductService {
-    async getAllProducts(page, limit, sort, category, status) {
+    async getAllProducts(page, limit, sort, status) {
         try {
             const options = {}
             if(page){
@@ -15,9 +15,9 @@ class ProductService {
             }
 
             const filter = {};
-            if(category){
+   /*          if(category){
                 filter.category = category || '';
-            }
+            } */
             if(status){
                 filter.status = status || true;
             }

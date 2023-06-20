@@ -1,7 +1,6 @@
-const mongoose = require('mogoose');
-const { mongo, Mongoose } = require('mongoose');
-const Schema = mongoose.Schema;
-const model = Mongoose.model;
+const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 const messageSchema = new Schema({

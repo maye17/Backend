@@ -1,4 +1,5 @@
-const MongooseProducts = require('../models/products.model.js');
+const productsModel = require('../models/products.model.js');
+
 
 class ProductService {
     async getAllProducts(page, limit, sort, status) {
@@ -15,14 +16,14 @@ class ProductService {
             }
 
             const filter = {};
-   /*          if(category){
+            if(marca){
                 filter.category = category || '';
-            } */
+            }
             if(status){
                 filter.status = status || true;
             }
 
-            const products = await MongooseProducts.paginate(filter, options);
+            const products = await productsModel.paginate(filter, options);
 
             return products;
         } catch (error) {
@@ -32,7 +33,7 @@ class ProductService {
 
     async getProductById(productId) {
         try {
-            const product = await MongooseProducts.findById(productId);
+            const product = await productsModel.findById(productId);
             return product;
         } catch (error) {
             throw error;
@@ -41,7 +42,7 @@ class ProductService {
 
     async addProduct(productData) {
         try {
-            const product = await MongooseProducts.create(productData);
+            const product = await productsModel.create(productData);
             return product;
         } catch (error) {
             throw error;
@@ -50,7 +51,7 @@ class ProductService {
 
     async updateProduct(productId, productData) {
         try {
-            const product = await MongooseProducts.findByIdAndUpdate(
+            const product = await productsModel.findByIdAndUpdate(
                 productId,
                 productData,
                 { new: true }
@@ -63,7 +64,7 @@ class ProductService {
 
     async deleteProduct(productId) {
         try {
-            const product = await MongooseProducts.findByIdAndDelete(productId);
+            const product = await productsModel.findByIdAndDelete(productId);
             return product;
         } catch (error) {
             throw error;

@@ -4,16 +4,16 @@ const express = require("express");
 /* const ProductManager = require("../dao/ProductManager.js"); */
 
 /* const productos = new ProductManager ("productos"); */
-const productsRouter = express.Router();
+
 const uploader = require("../utils/utils.js");
-const ProductService = require('../services/product.services.js')
+const ProductService = require('../services/product.services.js');
 const productsService = new ProductService();
 
+const productsRouter = express.Router();
 productsRouter.get("/", async (req,res)=> {
     try {
 
        /*  const products = await productos.getProduct(); */
-
        const products = await productsService.getAllProducts();
        console.log(products);
       /*   const limit = req.query.limit
@@ -112,7 +112,7 @@ productsRouter.put("/:pid",uploader.single("thumbnail"),  async   (req, res) => 
 
        const productos = await productsService.getAllProducts();
         let changeProduct = req.body;
-        productsService.updateProduct(id, changeProduct);
+        productos.updateProduct(id, changeProduct);
         return res.status(201).json({
             status: "Ok",
             msg: "product updated",

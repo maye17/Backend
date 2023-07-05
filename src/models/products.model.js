@@ -9,12 +9,14 @@ const productSchema = new Schema({
     thumbnail: { type: String, required: true },
     code: { type: String, required: true, unique: true},
     stock: { type: Number, required: true},
-    status: { type: Boolean, default: true }
-  }, { versionKey: false });
+    marca: {type:String,required:false},
+    status: { type: Boolean, default: false },
+    date: { type:Date},
+
+  } )/* { versionKey: false }) */
 
   productSchema.plugin(mongoosePaginate);
 
-/*   module.exports = mongooseMatch = mongoose.model("products", productSchema) */
 
 module.exports = model('products',productSchema)
   

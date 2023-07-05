@@ -7,6 +7,7 @@ let table = document.querySelector('.table','.table-hover');
 let thead = document.querySelector('thead');
 let tbody = document.querySelector('tbody');
 const btnAdd = document.querySelector('#btn-add')
+const btnDelete = document.querySelector("#btn-Delete")
 
 
 // Escuchando al servidor
@@ -23,6 +24,8 @@ const inputPrice = document.querySelector('#input-price');
 const inputCode = document.querySelector('#input-code');
 const inputStock = document.querySelector('#input-stock');
 inputImage = document.querySelector('#input-img');
+const inputMarca = document.querySelector("#input-marca");
+const inputDate = document.querySelector("#input-date");
 
 
 // llamado al formulario de productos
@@ -44,16 +47,18 @@ const EnviarProduct =(e)=>{
 
         const newProducts = {
             title:inputTitle.value,
-            description: inputDes.value,
+            description: description.value,
             price: inputPrice.value,
             thumbnail:inputImage.value,
             code:inputCode.value,
-            stock:inputStock.value
+            stock:inputStock.value,
+            marca:inputMarca.value,
+            date:inputDate.value
             
         }
   
         console.log('producto agregado',newProducts);
-        socket.emit('new-Product',newProducts);
+        socket.emit('new-Product',newProducts)
         toast.success('agregado con éxito!', {
           position: "top-right",
           autoClose: 1500,
@@ -71,6 +76,27 @@ const EnviarProduct =(e)=>{
 if(btnAdd){
     btnAdd.addEventListener('click',EnviarProduct)
 
+}
+
+// actualizar producto
+
+
+
+const removeProduct = (id) =>((productos.filter(article => article.id !== id),
+        toast.error('Producto eliminado!', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            })
+        ));
+
+if(btnDelete){
+  btnDelete.addEventListener('click',removeProduct)
 }
 
 //creando chat

@@ -1,0 +1,50 @@
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+        <a href="/"><img 
+            src="/images/COMPU-GADBIZZLogo.png"
+            alt="logo"
+            style="width: 80px;"
+        /></a>
+    <form class="d-flex justify-content-center" role="search">
+      <input class="form-control form-control-sm px-2" type="text" placeholder="Buscar productos..." aria-label="Search">
+      <button class="btn btn-outline-dark" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg></button>
+    </form>
+    <div class="d-flex">
+        <button type="button" class="btn btn-primary m-2"><a class="text-light text-decoration-none" href="/auth/login">Ingresar</a></button>
+        <button type="button" class="btn btn-primary m-2"><a  class="text-light text-decoration-none" href="/auth/register">Registrarse</a></button>
+
+    </div>
+  </div>
+</nav>
+<div class="container-fluid m-4 px-2">
+<div class="container-fluid d-flex flex-wrap justify-content-around">
+      {{#each products}}
+    <div class="card mx-2 my-2 flex-shrink-1" style="width: 18rem;">
+  <img src={{thumbnail}} class="card-img-top" alt="imagen">
+  <div class="card-body">
+    <h5 class="card-title">{{title}}</h5>
+    <p class="card-text">{{description}}</p>
+    <p class="card-text">{{marca}}</p>
+    <p>Código:{{code}}</p>
+    <p>Stock disponible:{{stock}}</p>
+    <a href="#" class="btn btn-primary">Agregar</a>
+  </div>
+</div>
+ {{/each}}
+</div>
+</div>
+  <div style="display: flex; justify-content: center; margin-top: 30px">
+    {{#if pagination.hasPrevPage}}
+    <a href="/?page={{pagination.prevPage}}&limit={{pagination.limit}}">&lt; Anterior</a>
+    {{/if}}
+    <span style="margin-left: 20px; margin-right: 20px">Página {{pagination.page}} de {{pagination.totalPages}}</span>
+    {{#if pagination.hasNextPage}}
+    <a href="/?page={{pagination.nextPage}}&limit={{pagination.limit}}">Siguiente</a>
+    {{/if}}
+  </div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

@@ -7,7 +7,8 @@ let table = document.querySelector('.table','.table-hover');
 let thead = document.querySelector('thead');
 let tbody = document.querySelector('tbody');
 const btnAdd = document.querySelector('#btn-add')
-const btnDelete = document.querySelector("#btn-Delete")
+const btnDelete = document.querySelector("#btn-Delete");
+const btnChatPrincipal = document.querySelector("#btn-chat")
 
 
 // Escuchando al servidor
@@ -27,6 +28,17 @@ inputImage = document.querySelector('#input-img');
 const inputMarca = document.querySelector("#input-marca");
 const inputDate = document.querySelector("#input-date");
 
+//llamado al chat en página pricinpal
+
+const openChat = (e)=>{
+e.preventDefault();
+console.log("probando ingresar al chat");
+window.open('chat','_self' )
+}
+
+if(btnChatPrincipal){
+  btnChatPrincipal.addEventListener('click', openChat)
+}
 
 // llamado al formulario de productos
 const FormProduct = (e)=>{

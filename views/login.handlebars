@@ -1,11 +1,12 @@
-<section className="box container-fluid">
-            <div className="box__card card shadow-lg p-3 mb-5 bg-body rounded">
-                <div className="card-body">
-                    <div className="box__card__body-img mb-2">
-                    </div>
-                    <div className="box__card__body-pa mb-2">
-                        <h4>Inicio de sesión</h4>
-                    </div>
+{{!-- 
+<section class="box container-fluid">
+    <div class="box__card card shadow-lg p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+            <div class="box__card__body-img mb-2">
+            </div>
+            <div class="box__card__body-pa mb-2">
+                <h4>Inicio de sesión</h4>
+            </div>
 <div class="container">
     <h2>Login</h2>
 <div class="mb-3">
@@ -19,4 +20,65 @@
 </div>
 </div>
 </div>
-</section>
+</section> --}}
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+        <a href="/"><img 
+            src="/images/COMPU-GADBIZZLogo.png"
+            alt="logo"
+            style="width: 80px;"
+        /></a>
+  </div>
+</nav>
+<section class="box container-fluid">
+            <div class="box__card card shadow-lg p-3 mb-5 bg-body rounded">
+               
+                <div class="card-body">
+                    <div class="box__card__body-img mb-2">
+                    </div>
+                    <div class="box__card__body-pa mb-2">
+                         <form caction="/auth/login" method="POST">
+                        <h4>Inicio de sesión</h4>
+                    </div>
+                    <div class="box__card__body-text mb-2">
+                        <label 
+                        htmlFor='email'
+                        class="col-sm-2 col-form-label">Usuario:</label>
+                        <div class="col-sm-10">
+                            <input 
+                            class="box__card__body-input-user form-control "
+                            type="email" name="email"
+                            id="email"
+                            placeholder="correo electrónico"
+                             />
+                        </div>
+                    </div>
+                    <div class="box__card__body-text mb-2">
+                        <label 
+                        htmlFor='password'
+                        class="col-sm-2 col-form-label">Password:</label>
+                        <div class="col-sm-10">
+                        <input 
+                            class="box__card__body-input-user form-control "
+                            type="password" name="password"
+                            id="password" 
+                            placeholder="contraseña"
+                           />
+                        </div>
+                    </div>
+                    <div class="box__card__body-btn mb-2">
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <Button  type="submit" value="login" class="btn btn-primary" id="ingresar">Ingresar</Button>
+                        </div>
+                        <div class="mb-2">
+                        <Button type="button" id="recuperar" class="btn btn-link">¿Olvidaste tu contraseña?</Button>
+                        <div class="mb-2">
+                        <Button type="button" id="create" class="btn btn-success"><a href="/auth/register" class="text-light">Crear cuenta</a></Button>
+                    </div>
+                    </div>                   
+                  
+                    </div>
+                </div>
+                </form>
+              </div>
+             </section>  

@@ -14,6 +14,8 @@ const form = require('./router/form.router');
 const connectMongo = require("./utils/mongo");
 const chatRouter = require("./router/chat.router");
 const ProductService = require("./services/product.services.js");
+const principalRouter = require("./router/principal.router.js");
+
 const productos = new ProductService();
 /* const MesaggeService = require("./services/mesagge.services.js");
 const msgs = new MesaggeService;
@@ -51,6 +53,7 @@ app.use('/auth', authRouter )
 //Rtuas: Sockets
 
 app.use("/realTimeProducts", realTimeProducts)
+app.use("/", principalRouter)
 
 
 //

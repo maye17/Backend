@@ -4,11 +4,11 @@ const ProductManager = require("../dao/ProductManager.js");
 const productos = new ProductManager ("productos");
 const allProductsRouter = express.Router();
 
-allProductsRouter.get("/", async (req,res)=> {
+allProductsRouter.get("/home", async (req,res)=> {
     try {
         const products = await productos.getProduct();
          
-      return  res.status(200).render('home',{products});
+      return  res.status(200).render('principal',{products});
         /* const {products} = await productos.readJson();
         const limit = req.query.limit
         const limitedProducts = limit ? products.slice(0, limit) : products;

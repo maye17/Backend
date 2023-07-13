@@ -111,6 +111,45 @@ if(btnDelete){
   btnDelete.addEventListener('click',removeProduct)
 }
 
+// BUSCADOR
+
+
+const buscador =document.querySelector('#buscador');
+const btnBuscar = document.querySelector('#btnBuscar');
+const resultado =document.querySelector('#resultado')
+
+const filtrar = ()=> {
+   console.log(buscador.value);
+    resultado.innerHTML = '';
+    const texto = buscador.value.toLowerCase();
+    for (let productoBuscar of productos){
+        let nombreProducto = productoBuscar.name.toLowerCase();
+        if(nombreProducto.indexOf (texto) !== -1){
+            resultado.innerHTML +=  `
+            <div class="card mx-2 my-2 flex-shrink-1" style="width: 18rem;">
+            <img src=${productoBuscar.thumbnail} class="card-img-top" alt="imagen">
+            <div class="card-body">
+              <h5 class="card-title">${productoBuscar.title}</h5>
+              <p class="card-text">${productoBuscar.description}</p>
+              <p class="card-text">${productoBuscar.marca}</p>
+              <p>Código:${productoBuscar.code}</p>
+              <a href="#" class="btn btn-primary">Agregar</a>
+            </div>
+          </div>`                  
+
+        }
+    }
+    if(resultado.innerHTML ===''){
+        resultado.innerHTML += `<h3>Producto no encontrado</h3>`
+        
+    }
+}
+
+btnBuscar.addEventListener('click', filtrar);
+/* formulario.addEventListener('keyup',filtrar) */
+
+
+
 //creando chat
 let userName = "";
 async function main() {
@@ -132,6 +171,11 @@ async function main() {
 
 main();
 
+
+
+
+
+/* CHAT */
 
 const chatBoxOne = document.querySelector("#textchat");
 
@@ -171,4 +215,5 @@ socket.on("msg_back_to_front", (msgs) => {
    
     msg.innerHTML =msgformat;
    });  
+   
    

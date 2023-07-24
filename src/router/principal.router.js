@@ -15,7 +15,7 @@ principalRouter.get("/", async (req,res)=> {
 
     try {
         const {page}=req.query;
-        const queryResult = await productsModel.paginate({},{limit:5,page:page || 1});
+        const queryResult = await productsModel.paginate({},{limit:4,page:page || 1});
         const {docs,...rest} =queryResult
    /*      console.log(queryResult); */
         let products =docs.map((doc)=>{

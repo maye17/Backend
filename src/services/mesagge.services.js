@@ -1,11 +1,11 @@
-const mensageMongoose = require ("../models/messages.model.js");
+const mensageModel = require ("../models/messages.model.js");
 
 class MesaggeService {
 
     async addMesagge (mesaggeData){
         try {
-            const product = await mensageMongoose.create(mesaggeData);
-            return product;
+            const message = await mensageModel.create(mesaggeData);
+            return message;
       
         } catch (error) {
             throw error;

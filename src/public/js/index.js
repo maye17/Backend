@@ -11,6 +11,52 @@ const btnDelete = document.querySelector("#btn-Delete");
 const btnChatPrincipal = document.querySelector("#btn-chat")
 
 
+
+
+   /* chat colapse */
+
+   const collapseBtn = document.querySelector('#collapse-btn');
+const chatWindow = document.getElementById('chat-window');
+const closeBtn = document.getElementById('close-btn');
+const messageInput = document.getElementById('message-input');
+const sendBtn = document.getElementById('send-btn');
+const chatMessages = document.getElementById('chat-messages');
+
+// Función para mostrar u ocultar la ventana emergente del chat
+function toggleChatWindow() {
+  chatWindow.classList.toggle('show');
+}
+
+// Función para agregar un mensaje al chat
+function addMessage(message) {
+  const li = document.createElement('li');
+  li.textContent = message;
+  chatMessages.appendChild(li);
+}
+
+// Evento clic en el botón de colapsar/expandir
+collapseBtn.addEventListener('click', toggleChatWindow);
+
+// Evento clic en el botón de cerrar
+closeBtn.addEventListener('click', toggleChatWindow);
+
+// Evento clic en el botón de enviar
+/* sendBtn.addEventListener('click', () => {
+  const message = messageInput.value;
+  addMessage(message);
+  messageInput.value = '';
+}); */
+
+// Simulación de mensajes recibidos
+setTimeout(() => {
+  addMessage('¡Hola!');
+}, 1000);
+
+setTimeout(() => {
+  addMessage('¿En qué puedo ayudarte?');
+}, 2000);
+
+
 // Escuchando al servidor
 
 socket.on('products',(productos)=>{
@@ -145,8 +191,8 @@ const filtrar = ()=> {
     }
 }
 
-btnBuscar.addEventListener('click', filtrar);
-/* formulario.addEventListener('keyup',filtrar) */
+/* btnBuscar.addEventListener('click', filtrar); */
+//buscador.addEventListener('keyup',filtrar)
 
 
 
@@ -216,4 +262,4 @@ socket.on("msg_back_to_front", (msgs) => {
     msg.innerHTML =msgformat;
    });  
    
-   
+  

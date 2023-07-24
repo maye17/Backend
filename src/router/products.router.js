@@ -6,18 +6,29 @@ const express = require("express");
 /* const productos = new ProductManager ("productos"); */
 
 const uploader = require("../utils/utils.js");
-const ProductService = require('../services/product.services.js');
+/* const ProductService = require('../services/product.services.js');
 const productsService = new ProductService();
+ */
+const ProductsController = require("../controller/product.controller.js")
+
+const productControllers = new ProductsController
 
 const productsRouter = express.Router();
-productsRouter.get("/", async (req,res)=> {
+
+
+productsRouter.get("/",productControllers.getAll);
+productsRouter.get("/:id", productControllers.getById);
+productsRouter.post("/", productControllers.createOne);
+
+
+/* productsRouter.get("/", async (req,res)=> {
     try {
 
-       /*  const products = await productos.getProduct(); */
+       //  const products = await productos.getProduct(); 
        const products = await productsService.getAllProducts();
        console.log(products);
-      /*   const limit = req.query.limit
-        const limitedProducts = limit ? products.slice(0, limit) : products; */
+      //   const limit = req.query.limit
+        //const limitedProducts = limit ? products.slice(0, limit) : products; 
       return  res.status(200).json({
             status:"OK",
             msg:"product list",
@@ -32,12 +43,11 @@ productsRouter.get("/", async (req,res)=> {
     }
 
 })
-
-productsRouter.get("/:pid", async (req, res) => {
+ */
+/* productsRouter.get("/:pid", async (req, res) => {
     try {
         const id = req.params.pid
-      /*   const dataId = await productos.getProductById(parseInt(id)); */
-
+    
       const dataId = await productsService.getProductById(parseInt(id))
         res.status(200).json(dataId)
     } catch (err) {
@@ -48,7 +58,7 @@ productsRouter.get("/:pid", async (req, res) => {
         }
     }
 })
-
+ */
 /* 
 productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
     try {
@@ -84,7 +94,7 @@ productsRouter.post("/", uploader.single("thumbnail"),  async (req, res) => {
     }
 }) */
 
-productsRouter.post("/", async (req,res) => {
+/* productsRouter.post("/", async (req,res) => {
     try {
         const productData = req.body;
         const createdProduct = await productsService.addProduct(productData);
@@ -151,7 +161,7 @@ productsRouter.delete("/:pid", uploader.single("thumbnail"), async  (req, res) =
 productsRouter.get("*", (req, res) => {
     res.status(404).json({ status: "error", msg: "Route not found", data: {} })
 })
-
+ */
 
 
 module.exports =  productsRouter;

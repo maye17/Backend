@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const {Schema, model} = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2');
 
 
 const messageSchema = new Schema({
@@ -9,4 +8,5 @@ const messageSchema = new Schema({
   });
 
 
-  module.exports = mensageMongoose = mongoose.model("mensage", messageSchema)
+  module.exports = model("mensage", messageSchema)
+

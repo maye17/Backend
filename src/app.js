@@ -62,7 +62,7 @@ let msgs =[]
 
 const socketServer= new Server(httpServer);
 socketServer.on("connection", (socket)=>{
-/*     console.log("se abrio un canal de socket" + socket.id); */
+    console.log("se abrio un canal de socket" + socket.id);
     
 /* socket.on("new-mesagge", async(
     msg)=>{
@@ -78,6 +78,7 @@ socket.on("msg_front_to_back", (msg) => {
     msgs.unshift(msg);
     socketServer.emit("msg_back_to_front", msgs)
  }); 
+
 
     socket.on("new-Product",async(newProducts)=>{
         try {

@@ -9,7 +9,7 @@ class ProductService {
                 options.page = page || 1
             }
             if(limit){
-                options.limit = limit || 5
+                options.limit = limit || 4
             }
             if(sort){
                 options.sort = { price: sort === 'desc' ? -1 : 1 };
@@ -17,15 +17,17 @@ class ProductService {
 
             const filter = {};
             if(marca){
-                filter.category = category || '';
+                filter.marca = marca || '';
             }
             if(status){
                 filter.status = status || true;
             }
 
-            const products = await productsModel.paginate(filter, options);
+            const dataProducts = await productsModel.paginate(filter, options);
+         
 
-            return products;
+            return dataProducts
+
         } catch (error) {
             throw error;
         }
@@ -33,7 +35,7 @@ class ProductService {
 
     async getProductById(productId) {
         try {
-            const product = await productsModel.findById(productId);
+            const product = await productsModel.findById({_id:productId});
             return product;
         } catch (error) {
             throw error;

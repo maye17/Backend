@@ -6,11 +6,9 @@ class ProductsController {
     async getAll (req,res) {
         try {
     
-           /*  const products = await productos.getProduct(); */
+          
            const products = await productsService.getAllProducts();
-           console.log("probando")
-          /*   const limit = req.query.limit
-            const limitedProducts = limit ? products.slice(0, limit) : products; */
+
           return  res.status(200).json({
                 status:"OK",
                 msg:"product list",

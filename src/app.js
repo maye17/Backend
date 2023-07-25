@@ -16,8 +16,8 @@ const ProductService = require("./services/product.services.js");
 const principalRouter = require("./router/principal.router.js");
 const productos = new ProductService();
 const chatRouter = require("./router/chat.router");
-const MesaggeService = require("./services/mesagge.services.js");
-const mensage = new MesaggeService;
+const MesaggeService = require("./services/message.services.js");
+const message = new MesaggeService;
 
 
 const httpServer= app.listen(port,()=>{
@@ -59,17 +59,19 @@ app.use("/", principalRouter)
 
 let msgs =[]
 
+
+
 const socketServer= new Server(httpServer);
 socketServer.on("connection", (socket)=>{
     console.log("se abrio un canal de socket" + socket.id);
     
-socket.on("new-mesagge", async (
+socket.on("new-message", async (
     newMessage)=>{
      
        try {
-           await mensage.addMesagge({...newMessage})
+           await message.addMesagge({...newMessage})
 
-           socketServer.emit('mensage',{newMessage})
+           socketServer.emit('message',newMessage)
            console.log(newMessage)
        } catch (error) {
         throw error   

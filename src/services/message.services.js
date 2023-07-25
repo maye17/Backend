@@ -6,7 +6,8 @@ class MesaggeService {
     async AllMessage (){
         try {
             
-            const dataMessage =  messagesModel
+            const dataMessage =  messagesModel.find(message)
+            return dataMessage
 
         } catch (error) {
             

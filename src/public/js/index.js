@@ -28,14 +28,14 @@ function toggleChatWindow() {
 }
 
 // Función para agregar un mensaje al chat
-function addMessage(message) {
+function ShowMessage(message) {
   const li = document.createElement('li');
   li.textContent = message;
   chatMessages.appendChild(li);
 }
 
-// Evento clic en el botón de colapsar/expandir
-/* collapseBtn.addEventListener('click', toggleChatWindow);
+/* // Evento clic en el botón de colapsar/expandir
+collapseBtn.addEventListener('click', toggleChatWindow);
 
 // Evento clic en el botón de cerrar
 closeBtn.addEventListener('click', toggleChatWindow); */
@@ -235,12 +235,12 @@ const chatBoxTwo = document.querySelector("#textchatTwo");
     });
     chatBoxOne.value = "";
   }
-}); */
+});
 
 
 
 socket.on("msg_back_to_front", (msgs) => {
-    /*  console.log(JSON.stringify(data)); */
+    // console.log(JSON.stringify(data)); 
    
     let msgformat = "";
    
@@ -264,7 +264,7 @@ socket.on("msg_back_to_front", (msgs) => {
    });  
    
 
-
+ */
    //guardar mensaje
 
    chatBoxTwo.addEventListener("keyup", ({ key }) => {

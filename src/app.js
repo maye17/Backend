@@ -12,14 +12,13 @@ const authRouter = require("./router/auth.router.js")
 const productos = new ProductManager ("productos.json"); */
 const form = require('./router/form.router');
 const connectMongo = require("./utils/mongo");
-const chatRouter = require("./router/chat.router");
 const ProductService = require("./services/product.services.js");
 const principalRouter = require("./router/principal.router.js");
-
 const productos = new ProductService();
-/* const MesaggeService = require("./services/mesagge.services.js");
-const msgs = new MesaggeService;
- */
+const chatRouter = require("./router/chat.router");
+const MesaggeService = require("./services/mesagge.services.js");
+const mensage = new MesaggeService;
+
 
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
@@ -64,14 +63,20 @@ const socketServer= new Server(httpServer);
 socketServer.on("connection", (socket)=>{
     console.log("se abrio un canal de socket" + socket.id);
     
-/* socket.on("new-mesagge", async(
-    msg)=>{
+socket.on("new-mesagge", async (
+    newMessage)=>{
      
-       await msgs.unshift(msg);
-        console.log(msg);
-        socketServer.emit("msg_back_to_front", msgs)
+       try {
+           await mensage.addMesagge({...newMessage})
+
+           socketServer.emit('mensage',{newMessage})
+           console.log(newMessage)
+       } catch (error) {
+        throw error   
+       }
+
     })
- */
+
 socket.on("msg_front_to_back", (msg) => {
 
     console.log(msg);

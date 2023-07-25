@@ -8,5 +8,5 @@ const messageSchema = new Schema({
   });
 
 
-  module.exports = model("mensage", messageSchema)
+  module.exports = model("message", messageSchema)
 

@@ -15,10 +15,21 @@ const productControllers = new ProductsController
 
 const productsRouter = express.Router();
 
-
+//obtiene todos los productos
 productsRouter.get("/",productControllers.getAll);
+
+//obtiene por id de producto
 productsRouter.get("/:id", productControllers.getById);
+//post =crear un producto
 productsRouter.post("/", productControllers.createOne);
+
+//put = modifica un producto
+
+productsRouter.put("/:id", productControllers.updateOne);
+
+//delete = elimina un producto
+
+productsRouter.delete("/:id",productControllers.deleteOne);
 
 
 /* productsRouter.get("/", async (req,res)=> {

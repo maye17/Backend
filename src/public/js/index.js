@@ -35,10 +35,10 @@ function addMessage(message) {
 }
 
 // Evento clic en el botón de colapsar/expandir
-collapseBtn.addEventListener('click', toggleChatWindow);
+/* collapseBtn.addEventListener('click', toggleChatWindow);
 
 // Evento clic en el botón de cerrar
-closeBtn.addEventListener('click', toggleChatWindow);
+closeBtn.addEventListener('click', toggleChatWindow); */
 
 // Evento clic en el botón de enviar
 /* sendBtn.addEventListener('click', () => {
@@ -48,14 +48,14 @@ closeBtn.addEventListener('click', toggleChatWindow);
 }); */
 
 // Simulación de mensajes recibidos
-setTimeout(() => {
+/* setTimeout(() => {
   addMessage('¡Hola!');
 }, 1000);
 
 setTimeout(() => {
   addMessage('¿En qué puedo ayudarte?');
 }, 2000);
-
+ */
 
 // Escuchando al servidor
 
@@ -84,6 +84,7 @@ window.open('chat','_self' )
 
 if(btnChatPrincipal){
   btnChatPrincipal.addEventListener('click', openChat)
+
 }
 
 // llamado al formulario de productos
@@ -215,19 +216,17 @@ async function main() {
 
 }
 
+
 main();
-
-
-
-
 
 /* CHAT */
 
 const chatBoxOne = document.querySelector("#textchat");
+const chatBoxTwo = document.querySelector("#textchatTwo");
 
 
 
-chatBoxOne.addEventListener("keyup", ({ key }) => {
+/* chatBoxOne.addEventListener("keyup", ({ key }) => {
   if (key == "Enter") {
     socket.emit("msg_front_to_back", {
       user: userName,
@@ -236,7 +235,9 @@ chatBoxOne.addEventListener("keyup", ({ key }) => {
     });
     chatBoxOne.value = "";
   }
-});
+}); */
+
+
 
 socket.on("msg_back_to_front", (msgs) => {
     /*  console.log(JSON.stringify(data)); */
@@ -249,7 +250,7 @@ socket.on("msg_back_to_front", (msgs) => {
      <li class="other">
            <div id="avatar" class="avatar"><img id="imgAvatar" src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
          <div class="msg">
-           <p id="msg" class="msg-name">${msg.user}</p>    
+            <p id="msg" class="msg-name">${msg.user}</p>    
            <p id="msg">${msg.msg}</p>    
          </div>
        </li>  
@@ -262,4 +263,45 @@ socket.on("msg_back_to_front", (msgs) => {
     msg.innerHTML =msgformat;
    });  
    
-  
+
+
+   //guardar mensaje
+
+   chatBoxTwo.addEventListener("keyup", ({ key }) => {
+    if (key == "Enter") {
+
+    const newMessage = {
+        user:userName,
+        message: chatBoxTwo.value,    
+    }
+    socket.emit('new-mesagge',newMessage)
+    chatBoxTwo.value = "";
+
+    console.log('mensaje guardado',newMessage);
+
+}
+   })
+
+   
+socket.on("msg_back_to_front", (newMessage) => {
+
+  let msgsformat = "";
+ 
+  newMessage.forEach(msg => {
+   let divTwo ="";
+   divTwo += `
+   <li class="other">
+         <div id="avatar" class="avatar"><img id="imgAvatar" src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+       <div class="msg">
+          <p id="msg" class="msg-name">${msg.user}</p>    
+         <p id="msg">${msg.chating}</p>    
+       </div>
+     </li>  
+  `
+  msgsformat =divTwo + msgsformat
+    
+  });
+   const chating = document.querySelector("#chating");
+ 
+   chating.innerHTML =msgsformat;
+ });  

@@ -14,7 +14,7 @@ chatRouter.get('/', async (req, res) => {
 
 
 
-/* 
+
 chatRouter.post('/', async(req,res)=>{
     try {
 
@@ -30,5 +30,5 @@ chatRouter.post('/', async(req,res)=>{
         throw error
     }
 })
- */
+
 module.exports = chatRouter;

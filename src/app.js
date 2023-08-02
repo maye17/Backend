@@ -8,12 +8,14 @@ const { Server } = require("socket.io");
 const allProductsRouter = require("./router/allproducts.js");
 const realTimeProducts = require("./router/realtimeproducts.js");
 const authRouter = require("./router/auth.router.js")
+/* const sessionsRouter = require("./router/sessions.router.js"); */
+const loginRouter = require("./router/login.router.js");
 /* const ProductManager = require("./dao/ProductManager.js");
 const productos = new ProductManager ("productos.json"); */
 const form = require('./router/form.router');
 const connectMongo = require("./utils/mongo");
-const ProductService = require("./services/product.services.js");
 const principalRouter = require("./router/principal.router.js");
+const ProductService = require("./services/product.services.js");
 const productos = new ProductService();
 const chatRouter = require("./router/chat.router");
 const MesaggeService = require("./services/message.services.js");
@@ -48,8 +50,12 @@ app.use("/formulario", form);
 app.use('/chat', chatRouter)
 app.use('/auth', authRouter )
 
+/* app.use('/api/sessions', sessionsRouter); */
 
-//Rtuas: Sockets
+app.use('/', loginRouter);
+
+
+//Rutas: Sockets
 
 app.use("/realTimeProducts", realTimeProducts)
 app.use("/", principalRouter)

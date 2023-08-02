@@ -16,12 +16,12 @@ class ProductService {
             }
 
             const filter = {};
-            if(marca){
-                filter.marca = marca || '';
+           /*  if(marca){
+                filter.marca == marca || '';
             }
             if(status){
-                filter.status = status || true;
-            }
+                filter.status == status || true;
+            } */
 
             const dataProducts = await productsModel.paginate(filter, options);
          

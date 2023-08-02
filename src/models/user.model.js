@@ -1,3 +1,4 @@
+//@ts-check
 const mongoose = require('mongoose');
 const {Schema, model} = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2');
@@ -13,12 +14,12 @@ const schema = new Schema({
         required:true,
         max:100,
     },
-    email:{
-        type:String,
-        required:true,
-        max:100,
-        unique:true
-    },
+    email: {
+        type: String,
+        required: true,
+        max: 100,
+        unique: true,
+      },
     password:{
         type:String,
         required:true,

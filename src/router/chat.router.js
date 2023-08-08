@@ -1,10 +1,10 @@
 const express = require ("express");
-const chatRouter = express.Router();  
-/* const MesaggeService = require("../services/mesagge.services")
-const mesaggeService = new MesaggeService; */
 
+
+const chatRouter = express.Router();  
 chatRouter.get('/', async (req, res) => {
     try {
+
         return res.render('chat', {})
     } catch (error) {
         throw "Don't see of chat"
@@ -12,14 +12,12 @@ chatRouter.get('/', async (req, res) => {
     
 })
 
-
-
-
+/* 
 chatRouter.post('/', async(req,res)=>{
     try {
 
         const mesaggeData =req.body;
-        const createdChat = await mesaggeService.addMesagge(mesaggeData);
+        const createdChat = await MesaggeService.addMesagge(mesaggeData);
         return res.status(200).json({
             status:'success',
             msg:'mensaje creado',
@@ -30,5 +28,24 @@ chatRouter.post('/', async(req,res)=>{
         throw error
     }
 })
+ */
+
+chatRouter.post('/', async(req,res)=>{
+    try {
+
+        const {user, message} = req.body;
+        const createdChat = await MesaggeService.addMesagge({user, message});
+        return res.status(200).json({
+            status:'success',
+            msg:'mensaje creado',
+            payload:createdChat
+        })
+
+    } catch (error) {
+        throw error
+    }
+}
+)
+
 
 module.exports = chatRouter;

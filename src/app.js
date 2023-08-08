@@ -1,3 +1,4 @@
+//@ts-check
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
@@ -8,23 +9,29 @@ const { Server } = require("socket.io");
 const allProductsRouter = require("./router/allproducts.js");
 const realTimeProducts = require("./router/realtimeproducts.js");
 const authRouter = require("./router/auth.router.js")
-/* const sessionsRouter = require("./router/sessions.router.js"); */
+const sessionsRouter = require("./router/sessions.router.js");
 const loginRouter = require("./router/login.router.js");
 /* const ProductManager = require("./dao/ProductManager.js");
 const productos = new ProductManager ("productos.json"); */
 const form = require('./router/form.router');
 const connectMongo = require("./utils/mongo");
 const principalRouter = require("./router/principal.router.js");
+const chatRouter = require("./router/chat.router");
+const iniPassport = require("../src/config/passport.config.js");
+const passport = require("passport");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const  socketServer = require("./utils/socketConnect.js");
 const ProductService = require("./services/product.services.js");
 const productos = new ProductService();
-const chatRouter = require("./router/chat.router");
-const MesaggeService = require("./services/message.services.js");
-const message = new MesaggeService;
 
 
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
 })
+
+
+socketServer(httpServer);
 
 
 connectMongo();
@@ -38,7 +45,20 @@ app.engine('handlebars',handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", "views");
 
+// session
 
+app.use(
+    session({
+      store: MongoStore.create({ mongoUrl: 'mongodb+srv://maye_17:Z43IROGnWaS5mLn0@ecommerce.dhbbfye.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 7200 }),
+      secret: 'un-re-secreto',
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
+//TODO LO DE PASSPORT
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // rutas api JSON
 app.use("/api/products", productsRouter);
@@ -50,9 +70,9 @@ app.use("/formulario", form);
 app.use('/chat', chatRouter)
 app.use('/auth', authRouter )
 
-/* app.use('/api/sessions', sessionsRouter); */
-
-app.use('/', loginRouter);
+app.use('/api/sessions', sessionsRouter);
+//No usar solo prueba
+/* app.use('/', loginRouter); */
 
 
 //Rutas: Sockets
@@ -63,56 +83,13 @@ app.use("/", principalRouter)
 
 //
 
-let msgs =[]
-
-
-
-const socketServer= new Server(httpServer);
-socketServer.on("connection", (socket)=>{
-    console.log("se abrio un canal de socket" + socket.id);
-    
-socket.on("new-message", async (
-    newMessage)=>{
-     
-       try {
-           await message.addMesagge({...newMessage})
-
-           socketServer.emit('message',newMessage)
-           console.log(newMessage)
-       } catch (error) {
-        throw error   
-       }
-
-    })
-
-socket.on("msg_front_to_back", (msg) => {
-
-    console.log(msg);
-    msgs.unshift(msg);
-    socketServer.emit("msg_back_to_front", msgs)
- }); 
-
-
-    socket.on("new-Product",async(newProducts)=>{
-        try {
-            await productos.addProduct({...newProducts})
-        
-        const newProductList = await productos.getAllProducts();
-        console.log('producto enviado',newProductList);
-        socketServer.emit('products',{newProductList})
-        } catch (error) {
-            console.log(error);
-        }
-        
-    })
-    
-});
 
 app.get("*"), (req, res) => {
     return res.status(404).json({
         status: "error",
          msg: "Not Found", 
-         data: {} })
+         data: {} 
+        })
 }
 
  
@@ -120,10 +97,10 @@ app.get("*"), (req, res) => {
 app.get(`/products/:pid`, async (req,res)=>{
     try {
         const idPedido = parseInt(req.params.pid) ;
-    const idSolicitado = await newProductManger.getProductById(idPedido);
+    const idSolicitado = await productos.getProductById(idPedido);
  //const idSolicitado = data.products.find((item)=> (item.id === idPedido))
     if(!idPedido){
-        return res.json(newProductManger.getAllProducts())
+        return res.json(productos.getAllProducts())
     }
      if(idSolicitado){
         return res.json(idSolicitado);
@@ -131,7 +108,5 @@ app.get(`/products/:pid`, async (req,res)=>{
          return res.json({error:'El producto con el id: ' +  idPedido + ' no existe'})
         }} catch (error) {
             throw new Error(error.message)
-
     }
 })
-

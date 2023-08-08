@@ -100,7 +100,7 @@
   
   /* M E S S A G E S */
   
-  .chat {
+  .chatTwo {
     list-style: none;
     background: none;
     padding: 0 0 50px 0;
@@ -232,7 +232,7 @@
   .msg p {
     font-size: 0.8rem;
     margin: 0 0 0.2rem 0;
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 1rem;
     
   }
   .msg img {
@@ -353,7 +353,7 @@
   /* T Y P E */
   
   input.textarea {
-   /*  position: fixed;
+    position: fixed;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -366,7 +366,7 @@
     padding-right: 55px;
     color: #666;
     font-weight: 400;
-    flex-grow: 1; */
+    flex-grow: 1;
     margin-right: 10px;
     align-items: center;
     background-color: rgb(255, 255, 255);
@@ -435,7 +435,6 @@
     position: absolute;
     left: 0px;
     -webkit-box-align: center;
-    align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
     height: 100%;

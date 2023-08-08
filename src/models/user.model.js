@@ -6,31 +6,36 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const schema = new Schema({
     firstName:{
         type:String,
-        required:true,
+        required:false,
         max:100,
     },
     lastName:{
-        type:String,
+        type: String,
         required:true,
         max:100,
     },
     email: {
         type: String,
-        required: true,
+        required: false,
         max: 100,
         unique: true,
       },
     password:{
-        type:String,
-        required:true,
+        type: String,
+        required:false,
         max:100,
-
     },
     isAdmin:{
-        type:Boolean,
+        type: Boolean,
         required:false,
 
-    }
+    },
+    usuario:{
+        type: String,
+        required:false,
+        max:100,
+    },
+
 });
 
 schema.plugin(mongoosePaginate)

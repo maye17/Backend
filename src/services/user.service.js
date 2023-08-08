@@ -1,6 +1,6 @@
 const usersModel = require("../models/user.model")
 const hashPassword = require("../utils/hashPassword")
-
+const createHash = require("../utils/createHash")
 
 
 class UserService {
@@ -46,13 +46,26 @@ async AllPassword (){
         }
     } */
 
-    async addUser (email,firstName,lastName,password){
+    async addUser (email,firstName,lastName,password,usuario){
        
    
         try {
 
+            const user = await usersModel.create({email:email, password: await createHash(password), firstName:firstName,lastName:lastName,isAdmin:false, usuario:usuario} )
+            return user;
+            }
+         catch (error) {
+            throw error;
+        }
+    }
 
-            const user = await usersModel.create({email:email,password:await hashPassword(password), firstName:firstName,lastName:lastName,isAdmin:false} )
+
+    async addUserGitHub (email,firstName,lastName,usuario){
+       
+   
+        try {
+
+            const user = await usersModel.create({firstName:firstName,lastName:lastName,isAdmin:false,usuario:usuario} )
             return user;
             }
          catch (error) {

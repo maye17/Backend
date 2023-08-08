@@ -1,4 +1,5 @@
 const socket =io();
+const sweetAlert = require('sweetalert2');
 
 //Creando la tabla de productos
 let box = document.querySelector('.container-fluid','.box');
@@ -158,6 +159,56 @@ if(btnDelete){
   btnDelete.addEventListener('click',removeProduct)
 }
 
+
+//inicio sesión
+
+/* const login = document.querySelector('#ingresar');
+const logout = document.querySelector('#logout');
+
+
+function iniciarSesion() {
+  console.log('click');
+  const email = document.querySelector('#email').value;
+  const password = document.querySelector('#password').value;
+  const user = {
+      email: email,
+      password: password
+  }
+
+  fetch('/auth/login', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user),
+  })
+      .then(res => res.json())
+      .then(data => {
+          console.log(data);
+          if (data.status === 'ok') {
+              window.location.href = '/';
+          } else {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...', 
+                  text: 'Usuario o contraseña incorrectos!',
+                  footer: '<a href>Why do I have this issue?</a>'
+                })
+          }
+      })
+      .catch(err => console.log(err));
+}
+
+
+login.addEventListener('click', iniciarSesion); */
+
+
+
+
+
+
+
+
 // BUSCADOR
 
 
@@ -200,7 +251,7 @@ const filtrar = ()=> {
 //creando chat
 let userName = "";
 async function main() {
-  const { value: nombre } = await Swal.fire({
+  const { value: nombre } = await  Swal.fire({
     title: "Enter your name",
     input: "text",
     inputLabel: "Your name",
@@ -217,13 +268,79 @@ async function main() {
 }
 
 
+
+
 main();
+
 
 /* CHAT */
 
 const chatBoxOne = document.querySelector("#textchat");
-const chatBoxTwo = document.querySelector("#textchatTwo");
+/* const chatBoxTwo = document.querySelector("#textchatTwo"); */
 
+
+
+/* 
+chatBoxOne.addEventListener("keyup", ({ key }) => {
+  if (key == "Enter") {
+    console.log("click")
+    socket.emit("msg_front_to_back", {
+      user: userName,
+      msg: chatBoxOne.value,
+
+    });
+    chatBoxOne.value = "";
+  }
+}); */
+
+chatBoxOne.addEventListener("keyup", (e) => {
+  e.preventDefault()
+
+  if (e.key == "Enter") {
+    console.log("apretando",e.key)
+    socket.emit("msg_front_to_back", {
+      user: userName,
+      msg: chatBoxOne.value,
+
+    });
+    chatBoxOne.value = "";
+  }
+});
+
+socket.on("msg_back_to_front", (newMessage) => {
+    // console.log(JSON.stringify(data)); 
+   
+    let msgformat = "";
+   
+    newMessage.forEach(mensa => {
+     let div ="";
+     div += `
+      <li class="other">
+           <div id="avatar" class="avatar"><img id="imgAvatar" src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
+         <div class="msg">
+            <p id="msg" class="msg-name">${mensa.user}</p>    
+           <p id="msg">${mensa.msg}</p>    
+         </div>
+      </li>  
+    `
+   msgformat =div + msgformat
+      
+    });
+  /*   const msg = document.querySelector("#textchat").value; */
+    const chating = document.querySelector("#chat");
+    chating.innerHTML =msgformat;
+   });  
+   
+
+
+
+/* socket.on("msg_back_to_front", (newMessage) => {
+    const messages = document.querySelector("#chat");
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${newMessage.userName}</strong>: ${newMessage.chatBoxOne}`;
+    messages.appendChild(li);
+  }); */
+/*  socket.emit('new-Product',newProducts) */
 
 
 /* chatBoxOne.addEventListener("keyup", ({ key }) => {
@@ -236,10 +353,10 @@ const chatBoxTwo = document.querySelector("#textchatTwo");
     chatBoxOne.value = "";
   }
 });
+ */
 
 
-
-socket.on("msg_back_to_front", (msgs) => {
+/* socket.on("msg_back_to_front", (msgs) => {
     // console.log(JSON.stringify(data)); 
    
     let msgformat = "";
@@ -261,13 +378,14 @@ socket.on("msg_back_to_front", (msgs) => {
      const msg = document.querySelector("#chat");
    
     msg.innerHTML =msgformat;
-   });  
+   });   */
+   
    
 
- */
+
    //guardar mensaje
 
-   chatBoxTwo.addEventListener("keyup", ({ key }) => {
+  /*  chatBoxTwo.addEventListener("keyup", ({ key }) => {
     if (key == "Enter") {
 
     const newMessage = {
@@ -281,9 +399,9 @@ socket.on("msg_back_to_front", (msgs) => {
 
 }
    })
-
+ */
    
-socket.on("msg_back_to_front", (newMessage) => {
+/* socket.on("msg_back_to_front", (newMessage) => {
 
   let msgsformat = "";
  
@@ -304,4 +422,17 @@ socket.on("msg_back_to_front", (newMessage) => {
    const chating = document.querySelector("#chating");
  
    chating.innerHTML =msgsformat;
- });  
+ });   */
+
+
+
+
+/*   logout.addEventListener('click', () => {
+    socket.emit('logout', userName);
+  }
+  );
+
+  socket.on('login', (userName) => {
+    console.log(`${userName} se ha conectado`);
+  }
+  ); */

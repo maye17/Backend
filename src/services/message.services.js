@@ -3,7 +3,7 @@ const messagesModel = require("../models/messages.model.js");
 
 class MesaggeService {
 
-    async AllMessage (){
+    async getMessage (){
         try {
             
             const dataMessage =  messagesModel.find(message)
@@ -14,9 +14,10 @@ class MesaggeService {
         }
     }
 
-    async addMesagge (mesaggeData){
+    async addMesagge (newMessage){
         try {
-            const message = await messagesModel.create(mesaggeData);
+            const message = await messagesModel.create(newMessage);
+            console.log("probando si se guarda",message)
             return message;
       
         } catch (error) {

@@ -67,6 +67,45 @@ socket.on("msg_front_to_back", (msg) => {
         
     });
     
+    socket.on("update-Product",async(updateProduct)=>{
+        try {
+            await productos.updateProduct({...updateProduct})
+            if (!updateProduct) {
+                // Manejar si el producto no se encuentra
+                return;
+              }
+        
+              // Envía la actualización al frontend a través del socket
+        const updateProductList = await productos.getAllProducts(updateProduct.id);
+        console.log('producto modificado',updateProductList);
+        socketServer.emit('products',{updateProductList})
+        } catch (error) {
+            console.log(error);
+        }
+        
+    });
+    
+    socket.on("delete-Product",async(productId)=>{
+        try {
+           const deleteProductList = await productos.deleteProduct(productId);
+
+           if (!deleteProductList) {
+            // Manejar si el producto no se encuentra
+            return console.log('producto no encontrado');
+
+           }
+
+          // console.log('producto eliminado',productId);
+           socketServer.emit('product Deleted',{msg:"mandar desde el back al front"})
+        } catch (error) {
+            console.log(error);
+        }
+        
+    });
+    
+
 })
+
+
 }
 module. exports = socketConnect;

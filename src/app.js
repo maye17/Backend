@@ -24,7 +24,7 @@ const MongoStore = require('connect-mongo');
 const  socketServer = require("./utils/socketConnect.js");
 const ProductService = require("./services/product.services.js");
 const productos = new ProductService();
-
+const adminRouter = require("./router/adminRouter.js");
 
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
@@ -69,6 +69,7 @@ app.use("/", allProductsRouter);
 app.use("/formulario", form);
 app.use('/chat', chatRouter)
 app.use('/auth', authRouter )
+app.use('/admin', adminRouter);
 
 app.use('/api/sessions', sessionsRouter);
 //No usar solo prueba

@@ -54,7 +54,7 @@ class ProductService {
     async updateProduct(productId, productData) {
         try {
             const product = await productsModel.findByIdAndUpdate(
-                productId,
+                {_id:productId},
                 productData,
                 { new: true }
             );
@@ -66,7 +66,7 @@ class ProductService {
 
     async deleteProduct(productId) {
         try {
-            const product = await productsModel.findByIdAndDelete(productId);
+            const product = await productsModel.findByIdAndDelete({_id:productId});
             return product;
         } catch (error) {
             throw error;

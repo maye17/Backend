@@ -25,7 +25,7 @@ productsRouter.post("/", productControllers.createOne);
 
 //put = modifica un producto
 
-productsRouter.put("/:id", productControllers.updateOne);
+productsRouter.put("/:pid", productControllers.updateOne);
 
 //delete = elimina un producto
 

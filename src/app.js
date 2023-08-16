@@ -25,6 +25,8 @@ const  socketServer = require("./utils/socketConnect.js");
 const ProductService = require("./services/product.services.js");
 const productos = new ProductService();
 const adminRouter = require("./router/adminRouter.js");
+const authAdminRouter = require("./router/authadmin.router.js");
+const AllUserRouter = require("./router/alluser.router.js");
 
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
@@ -63,6 +65,8 @@ app.use(passport.session());
 // rutas api JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use('/authAdmin', authAdminRouter)
+
 
 // Rutas: HTML Render
 app.use("/", allProductsRouter);
@@ -70,6 +74,7 @@ app.use("/formulario", form);
 app.use('/chat', chatRouter)
 app.use('/auth', authRouter )
 app.use('/admin', adminRouter);
+app.use('/users', AllUserRouter)
 
 app.use('/api/sessions', sessionsRouter);
 //No usar solo prueba

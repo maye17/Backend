@@ -51,12 +51,11 @@ class ProductService {
         }
     }
 
-    async updateProduct(productId, productData) {
+    async updateProduct({ _id, title, description, price, thumbnail, code, stock }) {
         try {
-            const product = await productsModel.findByIdAndUpdate(
-                {_id:productId},
-                productData,
-                { new: true }
+            const product = await productsModel.updateOne(
+                {_id:id},
+                 { _id, title, description, price, thumbnail, code, stock }
             );
             return product;
         } catch (error) {

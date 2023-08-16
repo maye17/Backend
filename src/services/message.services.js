@@ -1,4 +1,4 @@
-const messagesModel = require("../models/messages.model.js");
+const messageModel = require("../models/messages.model.js");
 
 
 class MesaggeService {
@@ -6,7 +6,7 @@ class MesaggeService {
     async getMessage (){
         try {
             
-            const dataMessage =  messagesModel.find(message)
+            const dataMessage = await messageModel.find({})
             return dataMessage
 
         } catch (error) {
@@ -14,9 +14,9 @@ class MesaggeService {
         }
     }
 
-    async addMesagge (newMessage){
+    async addMesagge (mesaggeData){
         try {
-            const message = await messagesModel.create(newMessage);
+          const message = await messageModel.create(mesaggeData);
             console.log("probando si se guarda",message)
             return message;
       

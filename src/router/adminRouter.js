@@ -13,6 +13,7 @@ adminRouter.get('/', async (req, res) => {
 /*      console.log(queryResult); */
     let products =docs.map((doc)=>{
         return {
+            id: doc._id,
             title: doc.title,
             description:doc.description,
             price:doc.price,
@@ -22,8 +23,10 @@ adminRouter.get('/', async (req, res) => {
             stock:doc.stock,
             }
     })
-   
-  return  res.status(200).render("admin",{products, pagination: rest});
+
+    const title = "Administrador";
+   //admin
+  return  res.status(200).render("products-admin",{products,title, pagination: rest});
 
 } catch (err) {
     if (err instanceof Error) {
@@ -33,6 +36,7 @@ adminRouter.get('/', async (req, res) => {
     }
 }
 });
+
 
 
 module.exports = adminRouter;

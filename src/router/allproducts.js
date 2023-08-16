@@ -1,4 +1,4 @@
-const fs = require("fs");
+
 const express = require("express");
 const ProductManager = require("../dao/ProductManager.js");
 const productos = new ProductManager ("productos");

@@ -5,9 +5,37 @@ const createHash = require("../utils/createHash")
 
 class UserService {
 
-    async AllUser (){
-        
-        const {email} = usersModel;
+    async AllUser() {
+        try {
+            const users = await usersModel.find({},
+                {
+                  _id: true,
+                  email: true,
+                  firstName: true,
+                  password: true,
+                  role: true,
+                });
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+   /* async AllUser () {
+
+    const {email} = usersModel;
+
+
+        try {
+            const dataUser =  usersModel.findOne({email})
+            console.log(dataUser)
+            return dataUser
+        }catch (error) {
+            throw ("ERROR",error)
+        }
+    } */
+       /*  const {email} = usersModel;
         try {
             
 
@@ -16,8 +44,8 @@ class UserService {
 
         } catch (error) {
             throw ("ERROR",error)
-        }
-    }
+        } */
+ 
 
 
 async AllPassword (){

@@ -81,6 +81,9 @@ authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/aut
 
     authRouter.get('/faillogin', async (req, res) => {
         return res.json({ error: 'fail to login' });
+
+        //debería ser para manejo de errores
+        //return res.redirect("/errorlogin")
         });
 
         authRouter.get("/login", async (req,res)=> {
@@ -146,6 +149,8 @@ authRouter.post("/register",passport.authenticate('register', { failureRedirect:
         return res.redirect('/auth/login');
         });
 })
+
+
 
 
 

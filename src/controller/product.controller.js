@@ -100,11 +100,11 @@ class ProductsController {
     
     async updateOne   (req, res) {
         try {
-            const id = req.params.pid
+            const _id = req.params.pid
     
            const productos = await productsService.getAllProducts();
             let changeProduct = req.body;
-            productos.updateProduct(id, changeProduct);
+            productos.updateProduct(_id, changeProduct);
             return res.status(201).json({
                 status: "Ok",
                 msg: "product updated",

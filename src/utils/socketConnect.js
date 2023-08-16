@@ -1,59 +1,42 @@
 //@ts-check
 const {Server} = require("socket.io");
-const messageService = require("../services/message.services.js");
-const MesaggeService = new messageService();
-
 const ProductService = require("../services/product.services.js");
+const messagesModel = require("../models/messages.model.js");
 const productos = new ProductService();
 
 
 
 const socketConnect = (httpServer) => {
 
-    let msgs =[];
-
 const socketServer= new Server(httpServer);
 socketServer.on("connection", (socket)=>{
     console.log("se abrio un canal de socket" + socket.id);
-    
-socket.on("new-message", async (
-    newMessage)=>{
-     
-       try {
-     
- /*        console.log('mensaje recibido', newMessage);
-        //Guardando mensaje
-        const message = MesaggeService.addMesagge({newMessage: newMessage.msgs, user: newMessage.user});
-        await message.save();
-        console.log('mensaje guardado', message);
-        //enviando mensaje
-        socketServer.emit('message',newMessage)
-        console.log(newMessage)
- */
-        
-       await MesaggeService.addMesagge({...newMessage})
 
-         socketServer.emit('message',newMessage)
-          console.log(newMessage) 
-       } catch (error) {
-        throw error   
-       }
 
-    })
+      //------------ CHAT---------------
+    socket.on("msg_front_to_back", async (msg) => {
+        try {
+          await messagesModel.create(msg);
+        } catch (e) {
+          console.log(e);
+        }
+        try {
+          const msgs = await messagesModel.find({});
+          socketServer.emit("listado_de_msgs", msgs);
+        } catch (e) {
+          console.log(e);
+        }
+      });
 
-socket.on("msg_front_to_back", (msg) => {
 
-    console.log(msg);
-    msgs.unshift(msg);
-    socketServer.emit("msg_back_to_front", msgs)
- }); 
 
+//--------Usuario desconectado-------------
 
  socket.on('disconnect', () => {
     console.log('Usuario desconectado');
   });
 
-
+//-----------Porducto nuevo ----------------
     socket.on("new-Product",async(newProducts)=>{
         try {
             await productos.addProduct({...newProducts})
@@ -67,9 +50,11 @@ socket.on("msg_front_to_back", (msg) => {
         
     });
     
-    socket.on("update-Product",async(updateProduct)=>{
+
+    //------------Actualizar producto
+    socket.on("update-Product",async(id, updateProduct)=>{
         try {
-            await productos.updateProduct({...updateProduct})
+            await productos.updateProduct({_id:id,...updateProduct})
             if (!updateProduct) {
                 // Manejar si el producto no se encuentra
                 return;

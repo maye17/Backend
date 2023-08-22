@@ -11,6 +11,15 @@
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 </svg></button>
     </form>
+    <li class="nav-item">
+      <a class="nav-link"
+      data-bs-toggle="modal" data-bs-target="#modal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+          <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+        </svg>
+        <span id="CarritoTotal">0</span>
+      </a>
+    </li> 
     <div class="d-flex">
         <button type="button" class="btn btn-primary m-2"><a class="text-light text-decoration-none" href="/auth/login" id="login">Ingresar</a></button>
 {{!--        <li class="nav-item dropdown"id="login">
@@ -42,9 +51,90 @@
     <p class="card-text">{{marca}}</p>
     <p>Código:{{code}}</p>
     <p>Stock disponible:{{stock}}</p>
-    <a href="#" class="btn btn-primary">Agregar</a>
+    <button type="button" class="Add-Cart btn btn-primary" data-product-id={{this.id}} >Agregar</button>
   </div>
+  {{!-- Modal --}}
+  <section class="container-xl">
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-title">Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">   
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton-vaciar">Vaciar Carrito</button>
+            <button class="btn btn-primary" id="procesarCompra" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Continuar Compra</button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="offcanvasRightLabel">
+                        Detalle Del Pedido
+                    </h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <form id="procesar-pago">
+                      <div class="form-group row">
+                        <label for="cliente" class="col-4 col-md-4 col-xs-4 col-form-label">Nombre:*</label>
+                        <input type="text" id="cliente" class="form-control" placeholder="escribir nombre">
+                        <label for="telefono" class="col-4 col-md-4 col-form-label">Telefono:</label>
+                        <input type="tel" id="telefono" class="form-control" placeholder="escribir telefono">
+                        <label for="direccion" class="col-4 col-md-4 col-form-label">Dirección:*</label>
+                        <input type="text" id="direccion" class="form-control" placeholder="escribir dirección">
+                        <div id="carrito" class="container-fluid form-group table-responsive">
+                          <table class="table"id="lista-compra" >
+                              <thead>
+                                <tr>
+                                  <th  scope="col">Imagen</th>
+                                  <th scope="col">Nombre</th>
+                                  <th scope="col">Precio</th>
+                                  <th scope="col">Cantidad</th>
+                                  <th scope="col">Sub Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                
+                              </tbody>
+                              <tr>
+                                  <th colspan="4" scope="col" class="text-center">Total:
+                                      <p id="totalCompra"></p>
+                                  </th>
+                              </tr>
+                            </table>
+                        </div>
+                        <!-- agrengado el spinner -->
+                        <div class="inactivo" id="spinner">
+                          <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                          </div>
+                        </div>
+                    </div>                 
+                    <button type="submit" class="btn btn-primary">Finalizar Pedido</button>
+                    </form>
+                    <div class="row justify.content-center d-none" id="spinner">
+                        <div class="spinner">
+                            <div class="dot1"></div>
+                        </div>
+                    </div>                            
+                  </div>
+                </div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <span>Precio Total:</span>
+            <p class="text-center" id="precioTotal"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>   
 </div>
+
  {{/each}}
 </div>
 </div>
@@ -56,27 +146,6 @@
     {{#if pagination.hasNextPage}}
     <a href="/?page={{pagination.nextPage}}&limit={{pagination.limit}}">Siguiente</a>
     {{/if}}
-  </div>
-  <div class="chat-container">
-    <button class="collapse-btn" id="collapse-btn">Chat</button>
-    <div class="chat-window" id="chat-window">
-      <div class="chat-header">
-        {{!-- <h2>Chat</h2> --}}
-        <div class="back"><i class="fa fa-chevron-left"></i><img src="https://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-        <button class="close-btn" id="close-btn">Cerrar</button>
-      </div>
-      <div class="chat-content">
-          <!-- Contenido del chat -->
-        <div class="name">{{nombre}}</div>
-        <ul id="chat" class="chat"></ul>
-      </div>
-      <div class="chat-footer">
-        <input id="textchat" class="textarea" type="text" placeholder="Escriba aquí!" value=""/><div class="emojis"></div>
-{{!--         <input type="text" id="message-input" placeholder="Escribe un mensaje">
-        <button id="send-btn">Enviar</button> --}}
-      </div>
-      </div>
-    </div>
   </div>
 
   <div class="bg-secondary p-2 text-dark bg-opacity-10">
@@ -140,4 +209,4 @@
 
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+<script src="/js/carrito.js"></script>

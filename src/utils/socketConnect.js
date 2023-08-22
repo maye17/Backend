@@ -1,10 +1,14 @@
 //@ts-check
 const {Server} = require("socket.io");
-const ProductService = require("../services/product.services.js");
+/* const ProductService = require("../services/product.api.service.js"); */
 const messagesModel = require("../models/messages.model.js");
-const productos = new ProductService();
+/* const productos = new ProductService();
+ */
 
-
+const PrincipalService = require('../services/product.service.js');
+const principalService = new PrincipalService()
+const CartService = require('../services/cart.service.js');
+const cartService = new CartService()
 
 const socketConnect = (httpServer) => {
 
@@ -36,12 +40,22 @@ socketServer.on("connection", (socket)=>{
     console.log('Usuario desconectado');
   });
 
-//-----------Porducto nuevo ----------------
+//-----------Producto nuevo ----------------
+
+// Obtener productos desde el servidor a través de Socket.io
+    socket.on("productos", async (productos) => {
+
+   const ProductosRecibidos= await principalService.getAllProd();
+  // Maneja los productos recibidos desde el servidor
+  // Puedes almacenarlos en una variable o en un estado, dependiendo de tu configuración
+  console.log(ProductosRecibidos);
+    });
+
     socket.on("new-Product",async(newProducts)=>{
         try {
-            await productos.addProduct({...newProducts})
+            await principalService.createProduct({...newProducts})
         
-        const newProductList = await productos.getAllProducts();
+        const newProductList = await principalService.getAllProd();
         console.log('producto enviado',newProductList);
         socketServer.emit('products',{newProductList})
         } catch (error) {
@@ -52,16 +66,18 @@ socketServer.on("connection", (socket)=>{
     
 
     //------------Actualizar producto
-    socket.on("update-Product",async(id, updateProduct)=>{
+    socket.on("update-Product",async(currentProductId, editedProduct)=>{
         try {
-            await productos.updateProduct({_id:id,...updateProduct})
-            if (!updateProduct) {
+          console.log(currentProductId);
+          console.log(editedProduct);
+            await principalService.updateProduct(currentProductId, editedProduct)
+            if (!editedProduct) {
                 // Manejar si el producto no se encuentra
                 return;
               }
         
               // Envía la actualización al frontend a través del socket
-        const updateProductList = await productos.getAllProducts(updateProduct.id);
+        const updateProductList = await principalService.getAllProd(editedProduct.currentProductId);
         console.log('producto modificado',updateProductList);
         socketServer.emit('products',{updateProductList})
         } catch (error) {
@@ -70,9 +86,10 @@ socketServer.on("connection", (socket)=>{
         
     });
     
-    socket.on("delete-Product",async(productId)=>{
+    socket.on("delete-Product",async(deletedProductId)=>{
         try {
-           const deleteProductList = await productos.deleteProduct(productId);
+           const deleteProductList = await principalService.deleteProduct(deletedProductId);
+           const updatedProductList = await principalService.getAllProd();
 
            if (!deleteProductList) {
             // Manejar si el producto no se encuentra
@@ -81,16 +98,27 @@ socketServer.on("connection", (socket)=>{
            }
 
           // console.log('producto eliminado',productId);
-           socketServer.emit('product Deleted',{msg:"mandar desde el back al front"})
+           socketServer.emit('product Deleted',{msg:"mandar desde el back al front"}, updatedProductList)
+
         } catch (error) {
             console.log(error);
         }
         
     });
     
-
+    socket.on('carrito', async(carritoId,productos)=>{
+        try {
+            const carrito = await cartService.createCart();
+            console.log(carrito);
+            const getCarrito = await cartService.getAllCart();
+            socketServer.emit('carrito', getCarrito);
+            } catch (error) {
+                console.log(error);
+                }
+                
+                });
+                
 })
-
 
 }
 module. exports = socketConnect;

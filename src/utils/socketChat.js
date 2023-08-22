@@ -1,9 +1,9 @@
 //@ts-check
 const {Server} = require("socket.io");
-const messageService = require("../services/message.services.js");
+const messageService = require("../services/message.service.js");
 const serviceMessage = new messageService();
 
-const ProductService = require("../services/product.services.js");
+const ProductService = require("../services/product.api.service.js");
 const messagesModel = require("../models/messages.model.js");
 const productos = new ProductService();
 

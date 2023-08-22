@@ -1,34 +1,20 @@
 const express = require ("express");
-const ProductManager = require("../dao/ProductManager");
-const products = new ProductManager("productos");
-const CartManager = require("../dao/CartManager");
-const carts = new CartManager ("carts")
+/* const Modelproducts = require("../models/products.model.js")
+const products = new Modelproducts(); */
+
+const CartControllers = require('../controllers/cart.controller.js');
+const cartControllers = new CartControllers ()
+
 const cartRouter = express.Router();
 
-cartRouter.get("/", async (req,res)=> {
-    try {
+cartRouter.get("/", cartControllers.getAllCart);
+cartRouter.get("/:cid", cartControllers.getAllCart);
+/* cartRouter.post("/:cid/products/:pid", cartControllers.createCart);
+cartRouter.post("/", cartControllers.createCart);
+cartRouter.put("/", cartControllers.updateCart);
+cartRouter.delete("/", cartControllers.deleteCart); */
 
-        const pedido = await carts.getCarts()
-        return res.status(200).json({
-            status:"success",
-            msg:"Exitoso",
-            data:carts
-        })
-    } catch (error) {
-        if(error instanceof  error){
-            res.status(400).json({
-            status:"error",
-            msg:"Error en ingreso", data:{}})
-        }else {
-            res.status(500).json({
-            status:"error",
-            msg:"Error en servidor", data:{}})
-        }
-    }
- 
-})
-
-
+/* 
 cartRouter.get("/:cid",  (req, res) => {
     try {
         const dataCarts =  carts.getCarts()
@@ -70,7 +56,7 @@ cartRouter.post("/:cid/products/:pid", (req,res)=>{
             data: {} })
     }
 })
-    
+     
 cartRouter.get("*", (req, res) => {
     res.status(404).json({ 
         status: "error",
@@ -78,6 +64,6 @@ cartRouter.get("*", (req, res) => {
         data: {} })
 })
 
-
+*/
 
 module.exports =  cartRouter;

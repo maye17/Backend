@@ -1,9 +1,21 @@
-const ProductModel = require('../models/products.model');
-const CartModel = require('../models/carts.model');
+/* const ProductModel = require('../models/products.model'); */
+const CartModel = require('../models/cart.model');
 
 
 class CartService {
     
+    async getAllCart (){
+        try {
+            
+            const cartExist = await CartModel.find({})
+            return cartExist;
+
+        } catch (error) {
+            throw error
+        }
+    }
+
+
     async createCart() {
         try {
             const cart = await CartModel.create({});

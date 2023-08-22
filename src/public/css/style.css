@@ -1,3 +1,7 @@
+ul, li {
+  list-style: none;
+}
+
 .box{
     margin: 30px;
     padding: 12px;
@@ -759,4 +763,11 @@ body{
 
 .btn-nav:hover{
   background:rgba(0,0,0,.3);
+}
+
+#CarritoTotal {
+  font-size: 30px;
+  font-weight: bold;
+  color: green;
+
 }

@@ -8,7 +8,7 @@ const passport = require('passport');
 
 const authAdminRouter = express.Router();
 
-const userController = require("../controller/authAdmin.controller.js")
+const userController = require("../controllers/authAdmin.controller.js")
 const controllerUser = new userController()
 
 //obtiene todos los productos

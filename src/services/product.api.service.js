@@ -16,12 +16,6 @@ class ProductService {
             }
 
             const filter = {};
-           /*  if(marca){
-                filter.marca == marca || '';
-            }
-            if(status){
-                filter.status == status || true;
-            } */
 
             const dataProducts = await productsModel.paginate(filter, options);
          
@@ -44,15 +38,20 @@ class ProductService {
 
     async addProduct(productData) {
         try {
-            const product = await productsModel.create(productData);
-            return product;
+            const savedProduct = await productsModel.create(productData);
+            return savedProduct;
         } catch (error) {
             throw error;
         }
     }
 
-    async updateProduct({ _id, title, description, price, thumbnail, code, stock }) {
+    async updateProduct(id, updateData) {
         try {
+
+            const { _id, title, description, price, thumbnail, code, stock } = updateData;
+
+            
+             
             const product = await productsModel.updateOne(
                 {_id:id},
                  { _id, title, description, price, thumbnail, code, stock }

@@ -1,4 +1,4 @@
-const ProductService = require('../services/product.services');
+const ProductService = require('../services/product.api.service');
 const productsService = new ProductService();
 
 class ProductsController {
@@ -79,12 +79,14 @@ class ProductsController {
     
     async createOne (req,res) {
         try {
+            
             const productData = req.body;
-            const createdProduct = await productsService.addProduct(productData);
+            const savedProduct = await productsService.addProduct(productData);
+
             return res.status(201).json({
                 status: 'success',
                 msg: 'Product created',
-                payload: createdProduct,
+                payload: savedProduct,
             });
         } catch (error) {
             console.error(error);

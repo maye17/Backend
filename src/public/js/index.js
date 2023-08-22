@@ -8,7 +8,7 @@ let thead = document.querySelector('thead');
 let tbody = document.querySelector('tbody');
 const btnAdd = document.querySelector('#btn-add')
 
-const btnEdit = document.querySelector("#btn-Edit");
+//const btnEdit = document.querySelector("#btnEdit");
 
 // Escuchando al servidor
 
@@ -27,6 +27,9 @@ inputImage = document.querySelector('#input-img');
 const inputMarca = document.querySelector("#input-marca");
 const inputDate = document.querySelector("#input-date");
 
+//campos del modal
+const idProduct = document. querySelector('#product-id')
+const inputEditTitle = document.querySelector('#input-editTitle')
 
 
 // llamado al formulario de productos
@@ -78,103 +81,109 @@ if(btnAdd){
 
 }
 
-// actualizar producto
+document.addEventListener("DOMContentLoaded", function () {
+  const editButtons = document.querySelectorAll(".edit-button");
+  const saveChangesButton = document.querySelector("#saveChangesButton");
 
-const updateProducts = (id) => {
-    const product = updateProduct.find((article) => article.id === id);
-    console.log(product);
-    inputTitle.value = product.title;
-    inputDes.value = product.description;
-    inputPrice.value = product.price;
-    inputImage.value = product.thumbnail;
-    inputCode.value = product.code;
-    inputStock.value = product.stock;
-    inputMarca.value = product.marca;
-    inputDate.value = product.date;
-    btnAdd.style.display = "none";
-    btnEdit.style.display = "block";
+  let currentProductId = null;
 
+  editButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      currentProductId = button.getAttribute("data-product-id");
 
-    btnEdit.addEventListener("click", () => {
-      const updateProduct = {
-        title: inputTitle.value,
-        description: inputDes.value,
-        price: inputPrice.value,
-        thumbnail: inputImage.value,
-        code: inputCode.value,
-        stock: inputStock.value,
-        marca: inputMarca.value,
-        date: inputDate.value,
-      };
-      socket.emit("update-product", id, updateProduct);
-      btnAdd.style.display = "block";
-      btnEdit.style.display = "none";
-      Toastify({
-        text: "Producto editado con éxito!",
-        className: "info",
-        style: {
-          background: "linear-gradient(to right, #00b09b, #96c93d)",
-        }
-      }).showToast();
+      // Lógica para obtener los detalles del producto y rellenar los campos del modal
+      // Puedes utilizar una llamada a tu servidor o base de datos para obtener los detalles
     });
+  });
 
-    socket.on('productUpdated', updatedProduct => {
-      console.log('Producto actualizado:', updatedProduct);
-      // Realizar acciones adicionales después de la actualización en el frontend
-    });
-  
-  };
+  saveChangesButton.addEventListener("click", function () {
+
+    // Obtener los valores editados desde los campos del formulario en el modal
+    const editedProductName = document.querySelector("#editProductName").value;
+    const editedProductDescription = document.querySelector("#editProductDescription").value;
+    const editedProductCategory = document.querySelector("#editProductCategory").value;
+    const editedProductPrice = document.querySelector("#editProductPrice").value;
+    const editedProductThumbnail = document.querySelector('#editProductThumbnail').value;
+    const editedProductCode = document.querySelector('#editProductCode').value;
+    const editedProductStock = document.querySelector('#editProductStock').value;
+
+    const editedProduct = {
+      title: editedProductName,
+      description: editedProductDescription,
+      category: editedProductCategory,
+      price: editedProductPrice,
+      thumbnail: editedProductThumbnail,
+      code: editedProductCode,
+      stock: editedProductStock,
+    };
+
+    console.log('Producto editado:', editedProduct);
+
+    socket.emit('update-Product', currentProductId, editedProduct);
+    Toastify({
+      text: "Producto agregando con éxito!",
+      className: "info",
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      }
+    }).showToast();
+      
 
 
-  if(btnEdit){
-    btnEdit.addEventListener('click',updateProducts)
-  }
+    // Cerrar el modal después de guardar los cambios
+    const modal = new bootstrap.Modal(document.querySelector("#editModal"));
+    modal.hide();
+  });
+});
+
+
 
 
 //elimando producto
-        const productId = document.querySelector('#code');
-        const btnGroup = document.querySelector(".btn-group");    
-        const btnDelete = document.querySelector(".delete-button");
 
+document.addEventListener("DOMContentLoaded", function () {
+  const deleteButtons = document.querySelectorAll(".delete-button");
 
+  
 
+  deleteButtons.forEach(button => {
 
-const removeProduct = (e) => {
-  e.preventDefault();
- 
-  console.log('click')
-  socket.emit('deleteProducts', productId)
+    button.addEventListener("click", function () {
+      console.log('haciendo click')
+      const productId = button.getAttribute("data-product-id");
+      // Envía el ID del producto al servidor a través de sockets para eliminarlo
+      socket.emit("delete-Product", productId);
+      Toastify({
+        text: "Producto eliminado!",
+        className: "info",
+        style: {
+          backgroundImage: "linear-gradient(to right, #370513, #4e091a, #670f1f, #7f1721, #972222)",
+          
+        }
+      }).showToast();
+        
+    });
+  });
 
-};
-
-// Escuchar la respuesta del backend y manejar la eliminación en el frontend
-
-socket.on('deleteProducts', deleteProductList => {
-  console.log('Producto eliminado:', deleteProductList);
-  socket.emit('deleteProducts', productId)
-  // Realizar acciones adicionales después de la eliminación en el frontend
-
-  Toastify({
-    text: "Producto eliminado!",
-    className: "info",
-    style: {
-      background: "linear-gradient(to right, #00b09b, #96c93d)",
+  // Escucha el evento del servidor que notifica que un producto ha sido eliminado
+  socket.on("product-deleted", function (deletedProductId) {
+    // Busca y elimina el producto de la lista en el frontend
+    const productList = document.querySelector("#productList");
+    const productToDelete = document.querySelector(`[data-product-id="${deletedProductId}"]`);
+    if (productToDelete) {
+      productList.removeChild(productToDelete.parentNode);
     }
-  }).showToast();
+  });
 });
-if(btnDelete){
-  btnDelete.addEventListener('click',removeProduct)
-}
 
 
-
-
+//renderizar la tabla de productos
 
 
 
 
 // BUSCADOR
-
+/* 
 
 const buscador =document.querySelector('#buscador');
 const btnBuscar = document.querySelector('#btnBuscar');
@@ -206,7 +215,7 @@ const filtrar = ()=> {
         
     }
 }
-
+ */
 /* btnBuscar.addEventListener('click', filtrar); */
 //buscador.addEventListener('keyup',filtrar)
 

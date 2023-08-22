@@ -1,6 +1,8 @@
 const mongoose  = require('mongoose');
 const orderModel = require('../models/order.model');
 const productsModel = require('../models/products.model');
+const cartModel = require('../models/cart.model');
+const { populate } = require('../models/user.model');
 
 
 const connectMongo = async ()=>{
@@ -13,6 +15,18 @@ const connectMongo = async ()=>{
     /*     console.log(db.connection.host); */
 
         console.log("plug to mongo!");
+
+
+       /*  let carts = await cartModel.findOne({_id:'64dfbb2c6637984282c2d87b'});
+        carts.products.push({productId:'64a34d077e0e1e9deb0ce261'})
+        let res = await cartModel.updateOne({_id:'64dfbb2c6637984282c2d87b'},carts)  */
+
+      /*  let res = await cartModel.find({}).populate('products.productId') 
+          console.log(JSON.stringify(res,null,4)) */
+       /*  const created = cartModel.create({
+            id:'2',
+            products:[]
+        }) */
    /*      let resultado = await orderModel.insertMany([
             {name:"Notebook Lenovo 14” Celeron 4GB 500GB IdeaPad 3 81WH0015AR", marca:"Lenovo", price:164, quantity:20,date:'2023-03-16T08:14:30Z'},
             {name:"Notebook Asus 15.6” Intel Core I3 4GB 256GB SSD 91X515EA-BR1751W", marca:"Asus", price:259, quantity:25,date:'2023-03-16T08:14:30Z'},

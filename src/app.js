@@ -3,30 +3,31 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 const port =8080;
-const productsRouter = require("./router/products.router.js");
-const cartsRouter = require("./router/cart.router.js");
+const productsRouter = require("./routes/products.api.router.js");
+const cartsRouter = require("./routes/cartsapi.router.js");
 const { Server } = require("socket.io");
-const allProductsRouter = require("./router/allproducts.js");
-const realTimeProducts = require("./router/realtimeproducts.js");
-const authRouter = require("./router/auth.router.js")
-const sessionsRouter = require("./router/sessions.router.js");
-const loginRouter = require("./router/login.router.js");
+const realTimeProducts = require("./routes/realtimeproducts.js");
+const authRouter = require("./routes/auth.router.js")
+const sessionsRouter = require("./routes/sessions.router.js");
+const loginRouter = require("./routes/login.router.js");
 /* const ProductManager = require("./dao/ProductManager.js");
 const productos = new ProductManager ("productos.json"); */
-const form = require('./router/form.router');
+const form = require('./routes/form.router.js');
 const connectMongo = require("./utils/mongo");
-const principalRouter = require("./router/principal.router.js");
-const chatRouter = require("./router/chat.router");
+const principalRouter = require("./routes/product.router.js");
+const chatRouter = require("./routes/chat.router.js");
 const iniPassport = require("../src/config/passport.config.js");
 const passport = require("passport");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const  socketServer = require("./utils/socketConnect.js");
-const ProductService = require("./services/product.services.js");
+const ProductService = require("./services/product.api.service.js");
 const productos = new ProductService();
-const adminRouter = require("./router/adminRouter.js");
-const authAdminRouter = require("./router/authadmin.router.js");
-const AllUserRouter = require("./router/alluser.router.js");
+const adminRouter = require("./routes/adminRouter.js");
+const authAdminRouter = require("./routes/authadmin.router.js");
+const AllUserRouter = require("./routes/alluser.router.js");
+const cartRouter = require("./routes/cart.router.js")
+
 
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
@@ -69,12 +70,13 @@ app.use('/authAdmin', authAdminRouter)
 
 
 // Rutas: HTML Render
-app.use("/", allProductsRouter);
+
 app.use("/formulario", form);
 app.use('/chat', chatRouter)
 app.use('/auth', authRouter )
 app.use('/admin', adminRouter);
-app.use('/users', AllUserRouter)
+app.use('/users', AllUserRouter);
+app.use('/carts', cartRouter)
 
 app.use('/api/sessions', sessionsRouter);
 //No usar solo prueba

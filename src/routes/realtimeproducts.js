@@ -5,17 +5,17 @@ const productos = new ProductManager ("./productos.json"); */
 
 const handlebars = require("express-handlebars");
 
-const principalRouter = express.Router();
+const realTimeProducts = express.Router();
 const uploader = require("../utils/utils.js");
-const ProductService = require("../services/product.services.js");
+const ProductService = require("../services/product.api.service.js");
 const productsModel = require("../models/products.model.js");
 const productos = new ProductService();
 
-principalRouter.get("/", async (req,res)=> {
+realTimeProducts.get("/", async (req,res)=> {
 
     try {
         const {page}=req.query;
-        const queryResult = await productsModel.paginate({},{limit:4,page:page || 1});
+        const queryResult = await productsModel.paginate({},{limit:5,page:page || 1});
         const {docs,...rest} =queryResult
    /*      console.log(queryResult); */
         let products =docs.map((doc)=>{
@@ -32,7 +32,7 @@ principalRouter.get("/", async (req,res)=> {
     
        /*  console.log(rest) */
        
-      return  res.status(200).render("principal",{products, pagination: rest});
+      return  res.status(200).render("realTimeProducts",{products, pagination: rest});
   
     } catch (err) {
         if (err instanceof Error) {
@@ -44,4 +44,4 @@ principalRouter.get("/", async (req,res)=> {
 
 })
 
-module.exports = principalRouter;
+module.exports = realTimeProducts;

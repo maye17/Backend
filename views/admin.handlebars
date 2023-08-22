@@ -46,24 +46,25 @@
         <td>{{stock}}</td>
         <td>
           <div class="btn-group">
-          <button class="btn btn-danger delete-button" id={{this.id}}>
+          <button class="btn btn-danger delete-button" data-product-id={{this.id}}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
               <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
             </svg>
           </button>
-          </button>
-          <button class="btn btn-warning" id="btnEdit"  
-          type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+          {{!-- class="btn btn-warning" id="btnEdit"  
+                            type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" --}}
+          <button class="edit-button"
+          type="button" data-bs-toggle="modal" data-bs-target="#editModal" data-product-id={{this.id}}>
+            {{!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
               <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
+            </svg> --}}
           </button>
           </div>  
         </td>
       </tr>
       <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -71,109 +72,112 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-                  <form id="addProductForm">
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="form-floating mb-3">
-                          <input
-                            type="text"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editTitle"
-                            placeholder="Nombre"
-                          />
-                          <label for="input-title"><i
-                              class="bi bi-pencil-square me-1"
-                            ></i>Nombre</label>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="form-floating">
-                          <input
-                            type="text"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editDescription"
-                            placeholder="Descripcion"
-                          />
-                          <label for="input-description"><i
-                              class="bi bi-file-bar-graph me-1"
-                            ></i>Descripcion</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-4">
-                        <div class="form-floating mb-3">
-                          <input
-                            type="text"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editCategory"
-                            placeholder="Categoria"
-                          />
-                          <label for="input-categoria"><i
-                              class="bi bi-tag me-1"
-                            ></i>Marca</label>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-floating mb-3">
-                          <input
-                            type="number"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editPrice"
-                            placeholder="Precio"
-                          />
-                          <label for="input-price"><i
-                              class="bi bi-currency-dollar me-1"
-                            ></i>Precio</label>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <div class="form-floating">
-                          <input
-                            type="text"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editThumbnail"
-                            placeholder="Imagen"
-                          />
-                          <label for="input-thumbnail"><i
-                              class="bi bi-card-image me-1"
-                            ></i>Imagen</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-6">
-                        <div class="form-floating mb-3">
-                          <input
-                            type="number"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editCode"
-                            placeholder="Codigo"
-                          />
-                          <label for="input-code"><i
-                              class="bi bi-qr-code me-1"
-                            ></i>Codigo</label>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <div class="form-floating">
-                          <input
-                            type="number"
-                            class="form-control border-0 border-bottom border-dark"
-                            id="input-editStock"
-                            placeholder="Stock"
-                          />
-                          <label for="input-stock"><i
-                              class="bi bi-list-ol me-1"
-                            ></i>Stock</label>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+        <form id="editProductForm">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductName"
+                  placeholder="Nombre"
+                />
+                <label for="editProductName"><i
+                    class="bi bi-pencil-square me-1"
+                  ></i>Nombre</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductDescription"
+                  placeholder="Descripcion"
+                />
+                <label for="editProductDescription"><i
+                    class="bi bi-file-bar-graph me-1"
+                  ></i>Descripcion</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductCategory"
+                  placeholder="Categoria"
+                />
+                <label for="editProductCategory"><i
+                    class="bi bi-tag me-1"
+                  ></i>Marca</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-floating mb-3">
+                <input
+                  type="number"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductPrice"
+                  placeholder="Precio"
+                />
+                <label for="editProductPrice"><i
+                    class="bi bi-currency-dollar me-1"
+                  ></i>Precio</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductThumbnail"
+                  placeholder="Imagen"
+                />
+                <label for="editProductThumbnail"><i
+                    class="bi bi-card-image me-1"
+                  ></i>Imagen</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-floating mb-3">
+                <input
+                  type="number"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductCode"
+                  placeholder="Codigo"
+                />
+                <label for="editProductCode"><i
+                    class="bi bi-qr-code me-1"
+                  ></i>Codigo</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-floating">
+                <input
+                  type="number"
+                  class="form-control border-0 border-bottom border-dark"
+                  id="editProductStock"
+                  placeholder="Stock"
+                />
+                <label for="editProductStock"><i
+                    class="bi bi-list-ol me-1"
+                  ></i>Stock</label>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Modificar</button>
+        <button type="submit" class="btn btn-primary"  
+        data-id={{this.id}}
+        id="saveChangesButton" 
+        >Modificar Producto</button>
       </div>
     </div>
   </div>
@@ -194,4 +198,6 @@
   </div>
 </section>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="/js/index.js"></script>
+<script src="/js/updateProduct.js"></script>

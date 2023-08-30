@@ -8,7 +8,13 @@ const cartControllers = new CartControllers ()
 const cartRouter = express.Router();
 
 cartRouter.get("/", cartControllers.getAllCart);
-cartRouter.get("/:cid", cartControllers.getAllCart);
+cartRouter.get("/:cid", cartControllers.getCartById);
+cartRouter.get("/:cid/:uid", cartControllers.getCartByUserId)
+cartRouter.post("/:cid/product/:pid", cartControllers.addProductTOCart);
+/* cartRouter.post("/", cartControllers.createCart);
+cartRouter.put("/", cartControllers.updateCart);
+cartRouter.delete("/", cartControllers.deleteCart); */
+
 /* cartRouter.post("/:cid/products/:pid", cartControllers.createCart);
 cartRouter.post("/", cartControllers.createCart);
 cartRouter.put("/", cartControllers.updateCart);

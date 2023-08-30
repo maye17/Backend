@@ -8,12 +8,14 @@ class PrincipalService{
 
     async getAllProd(page){
         try {
-
+         
             const queryResult = await productsModel.paginate({},{limit:4,page:page || 1});
             const {docs,...rest} =queryResult
+            
             //console.log(queryResult);
             let products =docs.map((doc)=>{
                 return {
+                    _id: doc._id,
                     title: doc.title,
                     description:doc.description,
                     price:doc.price,

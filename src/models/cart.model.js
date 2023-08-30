@@ -3,8 +3,9 @@ const {Schema, model} = require('mongoose')
 
 
   const cartSchema = new Schema({
-    id:String,
-
+ 
+    usuarioId:String,
+    
     products: [
       {
         productId:{

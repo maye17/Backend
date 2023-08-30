@@ -13,11 +13,13 @@
     </form>
     <li class="nav-item">
       <a class="nav-link"
-      data-bs-toggle="modal" data-bs-target="#modal">
+      data-cart-id={{this.id}}
+      data-bs-toggle="modal" 
+      data-bs-target="#modal">
       <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
           <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
         </svg>
-        <span id="CarritoTotal">0</span>
+       <span class="cart-quantity" id="cart-quantity-{{this.id}}">0</span>
       </a>
     </li> 
     <div class="d-flex">
@@ -37,9 +39,9 @@
     </div>
   </div>
 </nav>
-          <ul id="resultado">
+<ul id="resultado">
             
-        </ul>  
+</ul>  
 <div class="container-fluid m-4 px-2">
 <div class="container-fluid d-flex flex-wrap justify-content-around">
       {{#each products}}
@@ -51,8 +53,10 @@
     <p class="card-text">{{marca}}</p>
     <p>Código:{{code}}</p>
     <p>Stock disponible:{{stock}}</p>
-    <button type="button" class="Add-Cart btn btn-primary" data-product-id={{this.id}} >Agregar</button>
+    <span class="product-id" data-product-id={{this._id}}></span>
+    <button type="button" class="Add-Cart btn btn-primary" data-product-id={{this._id}} >Agregar</button>
   </div>
+
   {{!-- Modal --}}
   <section class="container-xl">
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">

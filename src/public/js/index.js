@@ -91,8 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       currentProductId = button.getAttribute("data-product-id");
 
-      // Lógica para obtener los detalles del producto y rellenar los campos del modal
-      // Puedes utilizar una llamada a tu servidor o base de datos para obtener los detalles
     });
   });
 

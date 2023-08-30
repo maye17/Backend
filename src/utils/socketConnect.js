@@ -106,17 +106,29 @@ socketServer.on("connection", (socket)=>{
         
     });
     
-    socket.on('carrito', async(carritoId,productos)=>{
+/*     socket.on('crear-carrito', async (carritoId)=>{
         try {
-            const carrito = await cartService.createCart();
-            console.log(carrito);
-            const getCarrito = await cartService.getAllCart();
-            socketServer.emit('carrito', getCarrito);
+           const carrito = await cartService.createCart(carritoId);
+            socket.emit('carrito', carrito);
+            console.log('Evento creando-carrito', carrito);
+
             } catch (error) {
                 console.log(error);
                 }
                 
-                });
+    }); */
+ 
+    socket.on('agregar-al-carrito', async ({ cartId, IdProducto }) => {
+      try {
+          const carritoActualizado = await cartService.addProductToCart(cartId, IdProducto);
+          socket.emit('producto-agregado-al-carrito', carritoActualizado);
+          console.log('Producto agregado al carrito:', carritoActualizado);
+      } catch (error) {
+          console.log(error);
+      }
+  });
+
+
                 
 })
 

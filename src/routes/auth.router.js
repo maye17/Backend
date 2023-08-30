@@ -5,13 +5,16 @@ const isUser = require("../middlewares/authUser.js");
 const isAdmin = require("../middlewares/authAdmin.js")
 
 const passport = require('passport');
+const CartControllers = require("../controllers/cart.controller.js");
 
+const cartControllers = new CartControllers();
 const authRouter = express.Router();
 
 const userService = new UserService();
+const authController = require("../controllers/auth.controller.js");
 
 
-authRouter.get("/perfil", isUser,(req,res)=> {
+authRouter.get("/perfil",(req,res)=> {
    
     const user = { email: req.session.email, isAdmin: req.session.isAdmin };
     return res.render('perfil', { user: user });
@@ -20,10 +23,10 @@ authRouter.get("/perfil", isUser,(req,res)=> {
 })
 
 
-authRouter.get("/administracion", isUser,isAdmin,(req,res)=> {
+authRouter.get("/administracion", (req,res)=> {
    
      
-        return res.send('datos super secretos');
+        return res.render('inicioAdmin');
 
 
 })
@@ -32,7 +35,7 @@ authRouter.get("/administracion", isUser,isAdmin,(req,res)=> {
 
 
 
-//registro son passport
+//registro sin passport
 /* authRouter.post("/login", async (req,res)=> {
     try {
   
@@ -60,8 +63,9 @@ authRouter.get("/administracion", isUser,isAdmin,(req,res)=> {
 
 //Con passport login
 
-authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/auth/faillogin' }),
+/* authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/auth/faillogin' }), 
 (req, res) => {
+    console.log('req.user',req.user)
     if(!req.user) {
         return res.json({ status: 'error', msg: 'Error in login', payload: {} });
 
@@ -75,9 +79,24 @@ authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/aut
             usuario:req.user.usuario,
 
         }
+
+        cartControllers.createCart(req.user._id);
+        
         return  res.redirect('/');
         //res.json({ status: 'success', msg: 'User logged', payload: req.user });
     });
+ */
+
+
+    //POST LOGIN 
+    authRouter.get("/login", authController.renderLoginPage);
+
+    authRouter.post("/login",
+    passport.authenticate('login', { failureRedirect: '/auth/faillogin' }),
+    authController.handleSuccessfulLogin
+);
+
+
 
     authRouter.get('/faillogin', async (req, res) => {
         return res.json({ error: 'fail to login' });
@@ -86,9 +105,10 @@ authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/aut
         //return res.redirect("/errorlogin")
         });
 
-        authRouter.get("/login", async (req,res)=> {
+   /*      authRouter.get("/login", async (req,res)=> {
             try {
-                
+                console.log('req.user',req.user)
+             
                 return res.render("login",{});
                 
             } catch (error) {
@@ -98,7 +118,7 @@ authRouter.post("/login",passport.authenticate('login', { failureRedirect: '/aut
                     data: {} })
             }
         
-        })
+        }) */
         
 
 authRouter.get('/sesion', async (req, res) => {
@@ -113,7 +133,7 @@ authRouter.post("/register",passport.authenticate('register', { failureRedirect:
 
         req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin, usuario: req.user.usuario };
 
-        return res.redirect('/')
+        return res.redirect('/perfil')
         //res.json({ msg: 'ok', payload: req.user });
     });
 

@@ -1,7 +1,7 @@
 const mongoose  = require('mongoose');
 const orderModel = require('../models/order.model');
 const productsModel = require('../models/products.model');
-const cartModel = require('../models/cart.model');
+const CartModel = require('../models/cart.model');
 const { populate } = require('../models/user.model');
 
 
@@ -16,6 +16,34 @@ const connectMongo = async ()=>{
 
         console.log("plug to mongo!");
 
+           /*  let cart = await cartModel.find({})
+            console.log(cart) */
+
+
+
+   /*          const addProductToCart = async (cartId, IdProducto) => {
+                try {
+                    let carts = await CartModel.findOne ({_id:cartId});
+                    if (!carts) {
+                   console.log('Cart not found');
+                    }
+
+                    carts.products.push({productId: IdProducto})
+
+                    let res = await CartModel.updateOne({_id:cartId},carts) 
+                } catch (error) {
+                        throw error;
+                    }
+            }
+            addProductToCart() */
+
+
+            //EN LA TOERIA DEBERIA SER ASÍ 
+
+
+     /*        let carts = await CartModel.findOne({_id:'64e8c7c56d46d40580b8e3c2'});
+        carts.products.push({productId:'64a34d077e0e1e9deb0ce261'})
+        let res = await CartModel.updateOne({_id:'64e8c7c56d46d40580b8e3c2'},carts) */
 
        /*  let carts = await cartModel.findOne({_id:'64dfbb2c6637984282c2d87b'});
         carts.products.push({productId:'64a34d077e0e1e9deb0ce261'})
@@ -23,8 +51,8 @@ const connectMongo = async ()=>{
 
       /*  let res = await cartModel.find({}).populate('products.productId') 
           console.log(JSON.stringify(res,null,4)) */
-       /*  const created = cartModel.create({
-            id:'2',
+      /*   const created = cartModel.create({
+            id:'3',
             products:[]
         }) */
    /*      let resultado = await orderModel.insertMany([

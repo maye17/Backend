@@ -65,7 +65,7 @@ app.use(passport.session());
 
 // rutas api JSON
 app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
+app.use("/api/carts", cartsRouter); //solo para api del carrito
 app.use('/authAdmin', authAdminRouter)
 
 

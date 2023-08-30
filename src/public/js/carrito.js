@@ -6,29 +6,198 @@ const procesarCompra = document.querySelector('#procesarCompra');
 const botonVaciar = document.querySelector('#boton-vaciar');
 let carritoId = null;
 const divisa = '$';
+document.addEventListener('DOMContentLoaded', async () => {
+    const btnAdd = document.querySelectorAll('.Add-Cart');
+    const userId = document.querySelector('#userId');
+    const productIdsSpan = document.querySelectorAll('.product-id');
+    
+    btnAdd.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const productId = e.target.getAttribute('data-product-id');
+            console.log('click', productId);
+
+            // Obtener el data-cart-id del enlace a (a.parentNode)
+            const cartIdElements = document.querySelectorAll('.nav-link[data-cart-id]');
+
+            cartIdElements.forEach(cartIdElement => {
+                const cartId = cartIdElement.getAttribute('data-cart-id');
+                const cartQuantitySpan = document.getElementById(`#cart-quantity-${cartId}`);
+
+                console.log('seleccionando el carrito cartId', cartId);
+                console.log('seleccionando el cartQuantitySpan', cartQuantitySpan);
+            
+                btnAdd.forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        const productId = e.target.getAttribute('data-product-id');
+                        console.log('click', productId);
+                        console.log('carrito activo', cartId);
+                        // Busca el <span> correspondiente al producto haciendo coincidir los atributos data-product-id
+                        const matchingSpan = Array.from(productIdsSpan).find(span => span.getAttribute('data-product-id') === productId);
+            
+                        if (matchingSpan) {
+                            // Actualiza el contenido del span correspondiente al ID del producto
+                            matchingSpan.textContent = `ID del producto: ${productId}`;
+                        }
+            
+                        try {
+                            const response = await fetch('/:cid/product/:pid', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+            
+                                body: JSON.stringify({
+                                    cartId: cartId,
+                                    productId: productId,
+                                }),
+            
+                            });
+                            if (response.ok) {
+                                const updatedCart = await response.json();
+                                console.log('Cart updated:', updatedCart);
+                                // Actualizar la suma de las cantidades en el front-end
+                                const totalCantidadElement = document.querySelector(`#cart-quantity-${cartId}`);
+                                const totalCantidad = updatedCart.products.reduce((total, product) => total + product.quantity, 0);
+                                totalCantidadElement.textContent = totalCantidad.toString();
+                            } else {
+                                console.error('Error adding products to cart');
+                                //   console.error('An error occurred:', error.message);
+            
+                            }
+                        } catch (error) {
+                            console.error('An error occurred:', error);
+                        }
+                    });
+                });
+            });
+        })
+    })
+    });
 
 
+//no usar
+/* document.addEventListener('DOMContentLoaded', async () => {
 
-// Obtener productos desde el servidor a través de Socket.io
-socket.on("productos", (productos) => {
-    // Maneja los productos recibidos desde el servidor
-    // Puedes almacenarlos en una variable o en un estado, dependiendo de tu configuración
-    console.log(productos);
-});
-  document.addEventListener("DOMContentLoaded", function () {
-    const AddCart = document.querySelectorAll('.Add-Cart');
-AddCart.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        console.log('click para agregar al carrito',carritoId)
-        carritoId = btn.getAttribute("data-product-id");
-        socket.emit('agregar-al-carrito', carritoId);
+    // Fetch products from API
+    const btnAdd = document.querySelectorAll('.Add-Cart');
+    const productIdsSpan = document.querySelectorAll('.product-id');
+    const cartId = document.querySelectorAll('#cart-id');
+    btnAdd.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const productId = e.target.getAttribute('data-product-id');
+            console.log('Agregando prodcuto el codigo es:',productId)
+            console.log('Viendo carrito activo',{cartId})
+            // Busca el <span> correspondiente al producto haciendo coincidir los atributos data-product-id
+            const matchingSpan = Array.from(productIdsSpan).find(span => span.getAttribute('data-product-id') === productId);
+            
+            if (matchingSpan) {
+                // Actualiza el contenido del span correspondiente al ID del producto
+                matchingSpan.textContent = `ID del producto: ${productId}`;
+            }
 
-     // agregarProductoCarrito(carritoId);
+            try {
+                const response = await fetch('/:cid/product/:pid', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    
+                    body: JSON.stringify({
+                        cartId: cartId,
+                        productIds: productId,
+                    }),
+                    
+                });
+                if (response.ok) {
+                    const updatedCart = await response.json();
+                    console.log('Cart updated:', updatedCart);
+                    // Actualizar la suma de las cantidades en el front-end
+                    const totalCantidadElement = document.querySelector('#totalCantidad');
+                    const totalCantidad = updatedCart.products.reduce((total, product) => total + product.quantity, 0);
+                    totalCantidadElement.textContent = totalCantidad.toString();
+                } else {
+                    console.error('Error adding products to cart');
+                 //   console.error('An error occurred:', error.message);
+        
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        });
     })
 })
-  })
 
+ */
+/* document.addEventListener('DOMContentLoaded',() => {
+    const btnAdd = document.querySelectorAll('.Add-Cart');
+    btnAdd.forEach(button => {
+        button.addEventListener('Click', async (e) => {
+        const productId = [e.target.getAttribute('data-product-id')];
+        console.log('click',productId)
+
+        try {
+            const response = await fetch('/:cid/product/:pid', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                
+                body: JSON.stringify({
+                    cartId: cartId,
+                    productIds: productId,
+                }),
+                
+            });
+            if (response.ok) {
+                const updatedCart = await response.json();
+                console.log('Cart updated:', updatedCart);
+            } else {
+                console.error('Error adding products to cart');
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
+    
+})
+})
+})
+ */
+ const actualizarInterfazCarrito = () => {
+
+    const modalBody = document.querySelector('.modal .modal-body');
+    modalBody.innerHTML="";
+    carritoActualizado.forEach(product => {
+        const { _id, title, description, price, thumbnail, code, stock } = product
+        modalBody.innerHTML +=`
+        <div class="modal-contenedor">
+            <div>
+                <img class="img-fluid img-carrito" src="${thumbnail}">
+            </div>
+            <div>
+                <p>Producto: ${title}</p>
+                <p>Precio:  ${divisa} ${price}</p>
+                <p>Cantidad: ${quatify}</p>
+                <button onclick="eliminarProductoCarrito(${_id})" class= "btn btn-danger">Eliminar Producto</button>         
+            </div>
+        </div>`
+    });   
+    //recorriendo el carrito, si esta vacio muestra mensaje
+    if(carritoActualizado.length===0){
+        modalBody.innerHTML=`
+        <p class="text-center text-primary">El carrito esta vacio</p>`
+    }
+    //recorriendo el carrito para conocer la cantidad de productos
+    CarritoTotal.textContent = carritoActualizado.length;
+
+    //calculando el precio total a pagar de los productos
+    precioTotal.innerText= divisa + carritoActualizado.reduce((acc,product) => acc + product.cantidad * product.price, 0);
+    guardaLocalStorage();
+}
+     
+    
 /* 
 procesarCompra.addEventListener('click',ValidarProductosComprados)
 // variable para incrementar el valor total en el carrito

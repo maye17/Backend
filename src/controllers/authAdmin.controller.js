@@ -10,7 +10,7 @@ class userController {
  
             return  res.status(200).json({
                 status:"OK",
-                msg:"product list",
+                msg:"user list",
                 payload:users,
             })
          } catch (err) {

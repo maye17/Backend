@@ -22,14 +22,15 @@ async function handleSuccessfulLogin(req, res) {
         // Crear el carrito para el usuario que inició sesión
         await cartControllers.createCart(req.user._id);
         console.log(req.user._id)
-        //controla que el usuario sea administrador
+        //controla que el usuario no sea administrador
         if(!req.user.isAdmin){
             console.log('req.user para usuario comun',req.user)
-            return res.redirect('/auth/perfil')
+            return res.redirect('/auth/user')
         }
-        // si no es admin Redirigir al usuario a la página principal o a donde desees
-        console.log('req.user a perfil',req.user)
-        return res.redirect('/auth/inicioAdmin');
+        // si es admin Redirigir al usuario a la página principal 
+        console.log('req.user a user',req.user)
+        return res.redirect('/auth/administracion');
+        // return res.redirect('/auth/inicioAdmin');
     } catch (error) {
         res.status(500).json({ 
             status: "error",

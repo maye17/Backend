@@ -14,16 +14,16 @@ const userService = new UserService();
 const authController = require("../controllers/auth.controller.js");
 
 
-authRouter.get("/perfil",(req,res)=> {
+authRouter.get("/user",isUser,(req,res)=> {
    
     const user = { email: req.session.email, isAdmin: req.session.isAdmin };
-    return res.render('perfil', { user: user });
+    return res.render('user', { user: user });
 
 
 })
 
 
-authRouter.get("/administracion", (req,res)=> {
+authRouter.get("/administracion", isAdmin,(req,res)=> {
    
      
         return res.render('inicioAdmin');
@@ -88,14 +88,27 @@ authRouter.get("/administracion", (req,res)=> {
  */
 
 
-    //POST LOGIN 
+    //POST LOGIN CON PASSPORT
     authRouter.get("/login", authController.renderLoginPage);
 
     authRouter.post("/login",
     passport.authenticate('login', { failureRedirect: '/auth/faillogin' }),
+    (req,res,next) => {
+
+        if(req.user && req.user.isAdmin===false){
+            isUser(req,res,next);
+            console.log("Acceso de usuario validado")
+        }else if(req.user && req.user.isAdmin===true){
+            isAdmin(req,res,next);
+            console.log("Acceso de administración validado");
+        }else{
+            res.redirect('/auth/faillogin')
+        }
+
+    },
+    
     authController.handleSuccessfulLogin
 );
-
 
 
     authRouter.get('/faillogin', async (req, res) => {
@@ -133,7 +146,7 @@ authRouter.post("/register",passport.authenticate('register', { failureRedirect:
 
         req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin, usuario: req.user.usuario };
 
-        return res.redirect('/perfil')
+        return res.redirect('/user')
         //res.json({ msg: 'ok', payload: req.user });
     });
 

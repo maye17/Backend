@@ -1,16 +1,17 @@
 
 const express = require('express');
 const productsModel = require('../models/products.model.js');
+const isAdmin = require('../middlewares/authAdmin.js');
 const adminRouter = express.Router();
 
 
-adminRouter.get('/', async (req, res) => {
+adminRouter.get('/', isAdmin, async (req, res) => {
   //res.render('admin');
   try {
     const {page}=req.query;
     const data = await productsModel.paginate({},{limit:5,page:page || 1});
     const {docs,...rest} =data
-/*      console.log(queryResult); */
+    
     let products =docs.map((doc)=>{
         return {
             id: doc._id,

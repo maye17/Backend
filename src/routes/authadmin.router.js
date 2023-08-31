@@ -12,7 +12,7 @@ const userController = require("../controllers/authAdmin.controller.js")
 const controllerUser = new userController()
 
 //obtiene todos los productos
-authAdminRouter.get("/users",controllerUser.getUser);
+authAdminRouter.get("/users",isAdmin, controllerUser.getUser);
 
 authAdminRouter.post("/",passport.authenticate('users', { failureRedirect: '/auth/failregister' }), async (req, res) => {
     if(!req.user) {

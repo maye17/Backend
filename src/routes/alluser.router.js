@@ -1,9 +1,10 @@
 const express = require("express");
 const UserService = require('../services/user.service.js');
 const serviceUser = new UserService();
+const isAdmin = require("../middlewares/authAdmin.js");
 const AllUserRouter = express.Router();
 
-AllUserRouter.get("/", async (req,res)=> {
+AllUserRouter.get("/", isAdmin, async (req,res)=> {
     try {
 /*         const users = await serviceUser.AllUser({});    
         console.log(users)     
@@ -18,7 +19,7 @@ AllUserRouter.get("/", async (req,res)=> {
               email: user.email,
               firstName: user.firstName,
               password: user.password,
-              rol: user.rol,
+              role: user.role,
             };
         })
         const title = "Administrador";

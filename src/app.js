@@ -89,7 +89,8 @@ app.use("/realTimeProducts", realTimeProducts)
 app.use("/", principalRouter)
 
 
-//
+//Ruta para usuario acomodando en capas
+
 
 
 app.get("*"), (req, res) => {
